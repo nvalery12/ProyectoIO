@@ -30,7 +30,7 @@ public class Simulacion {
         // TODO code application logic here
         Integer nEvento;
         List<Integer> cola = new ArrayList<Integer>();
-        
+        //Hola
         Scanner lectura = new Scanner(System.in);
         
         String directorio = System.getProperty("user.dir");
