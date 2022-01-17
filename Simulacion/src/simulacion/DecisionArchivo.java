@@ -5,6 +5,8 @@
  */
 package simulacion;
 
+import java.awt.BorderLayout;
+
 /**
  *
  * @author Noel Roberto
@@ -94,7 +96,13 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Inicio.asd=2;
+        CrearArchivo p2 = new CrearArchivo();
+        p2.setSize(980, 589);
+        p2.setLocation(0, 0);
+        removeAll();
+        add(p2, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

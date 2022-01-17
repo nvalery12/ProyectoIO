@@ -15,9 +15,11 @@ import java.awt.Toolkit;
  */
 public class Inicio extends javax.swing.JFrame {
     DecisionArchivo pantalla= new DecisionArchivo();
-    public static Integer asd= new Integer(0);
+    public static Integer tiempo= new Integer(0);
     public static Integer nServs= new Integer(0);
     VisualizarSimulacion p1 = new VisualizarSimulacion();
+    public static Probabilidades llegadas;
+    public static Probabilidades servicios;
 
     /**
      * Creates new form Inicio
@@ -44,7 +46,8 @@ public class Inicio extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(992, 600));
+        setMinimumSize(new java.awt.Dimension(1000, 600));
+        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         panelInicio.setBackground(new java.awt.Color(153, 255, 255));
 
@@ -120,10 +123,10 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        p1.setSize(980, 589);
+        pantalla.setSize(980, 589);
         panelInicio.setLocation(0, 0);
         panelInicio.removeAll();
-        panelInicio.add(p1,BorderLayout.CENTER);
+        panelInicio.add(pantalla,BorderLayout.CENTER);
         panelInicio.revalidate();
         panelInicio.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed

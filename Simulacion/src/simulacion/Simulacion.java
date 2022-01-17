@@ -21,6 +21,7 @@ public class Simulacion {
 
     public static List<Renglon> tabla = new ArrayList<Renglon>();
     public static Integer nServidores = new Integer(0);
+    public static Integer undTiemp= new Integer(0);
     
     /**
      * @param args the command line arguments
@@ -28,7 +29,6 @@ public class Simulacion {
     public static void main(String[] args) {
         // TODO code application logic here
         Integer nEvento;
-        Integer undTiemp= new Integer(0);
         List<Integer> cola = new ArrayList<Integer>();
         
         Scanner lectura = new Scanner(System.in);

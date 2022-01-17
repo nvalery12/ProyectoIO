@@ -23,8 +23,7 @@ public class Probabilidades {
         min = new Integer[cant];
         max = new Integer[cant];
     }
-    
-    
+
     public Integer num(Integer random){
         int i=0;
         while(i<tiempos.length){
