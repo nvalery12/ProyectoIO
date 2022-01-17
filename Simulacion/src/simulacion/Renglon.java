@@ -166,6 +166,13 @@ public class Renglon {
         this.dT[posicion]=valor;
     }
     
+    public Integer getSSPosi(Integer posicion){
+        return this.sS[posicion];
+    }
+    
+    public Integer getDTPosi(Integer posicion){
+        return this.dT[posicion];
+    }
     public void print(){
         String imprim="N°: "+num+" Tipo: "+tipo+" Cliente: "+cliente+" TM: "+tM+" ";
         for (int i = 0; i < sS.length; i++) {

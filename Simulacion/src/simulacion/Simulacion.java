@@ -16,15 +16,16 @@ import java.util.Scanner;
  */
 public class Simulacion {
 
+    public static List<Renglon> tabla = new ArrayList<Renglon>();
+    public static Integer nServidores = new Integer(0);
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Integer nEvento,nCliente,undTiempo,nServidores,nCcola;
+        Integer nEvento,undTiempo;
         List<Integer> cola = new ArrayList<Integer>();
-        Character []tipoEvento;
-        List<Renglon> tabla = new ArrayList<Renglon>();
         
         Scanner lectura = new Scanner(System.in);
         
@@ -78,6 +79,8 @@ public class Simulacion {
         rPrin.setNum(0);
         rPrin.setTipo('n');
         rPrin.setCliente(0);
+        rPrin.setaT(aT);
+        rPrin.settM(tM);
         for (int i = 0; i < nServidores; i++) {
             rPrin.updateSS(i, 0);
         }
@@ -177,6 +180,8 @@ public class Simulacion {
             System.out.println("\n");
         }
         
+        Inicio interfaz= new Inicio();
+        interfaz.setVisible(true);
     }
     
     public static Integer menor(Integer nserv, Servidor[] servidoresact){
