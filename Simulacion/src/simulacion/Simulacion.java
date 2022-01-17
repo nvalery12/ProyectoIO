@@ -91,12 +91,13 @@ public class Simulacion {
         rPrin.setnAleatorioTS(-1);
         rPrin.settServicio(-1);
         tabla.add(new Renglon(rPrin));
+        
         while (tM<=undTiempo) {       
-            Boolean cambioTabla=false;
+//            Boolean cambioTabla=false;
             //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
             //Caso 1 AT es igual a TM y menor a los DT
             if((aT==tM)){
-                cambioTabla=true;
+//                cambioTabla=true;
                 tipo='l';
                 nEvento=nEvento+1;
                 ultimoC=ultimoC+1;
@@ -132,7 +133,7 @@ public class Simulacion {
                 rPrin.setaT(aT);
             }else{
                 if(tM==menor(nServidores, servidores)){
-                    cambioTabla=true;
+//                    cambioTabla=true;
                     tipo='s';
                     nEvento=nEvento+1;
                     rPrin.setTipo(tipo);
@@ -162,13 +163,25 @@ public class Simulacion {
                     }
                 }
             }
-            if(cambioTabla){
-                rPrin.tM=tM;
-                tabla.add(new Renglon(rPrin));
+            
+            
+            
+            
+//                if(cambioTabla){
+//                rPrin.tM=tM;
+//                tabla.add(new Renglon(rPrin));
+//            }
+//            if((aT!=tM)&&(tM!=menor(nServidores, servidores))){
+//                tM=tM+1;
+//            }
+            
+            if(aT<=menor(nServidores, servidores)){
+                tM = aT;
+            }else{
+                tM=menor(nServidores, servidores);  
             }
-            if((aT!=tM)&&(tM!=menor(nServidores, servidores))){
-                tM=tM+1;
-            }
+            rPrin.tM=tM;
+            tabla.add(new Renglon(rPrin));
             
             
         }
@@ -182,7 +195,7 @@ public class Simulacion {
     public static Integer menor(Integer nserv, Servidor[] servidoresact){
         Integer tiempomenor=servidoresact[0].getdT();
         for (int i = 1; i < nserv; i++) {
-            if (tiempomenor>servidoresact[i].getdT()) {
+            if (tiempomenor>servidoresact[i].getdT()){
                 tiempomenor=servidoresact[i].getdT();
             }
         }
