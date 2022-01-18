@@ -5,6 +5,8 @@
  */
 package simulacion;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -180,17 +182,17 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        tell=(DefaultTableModel)this.tableTELL.getModel();
+        tss=(DefaultTableModel)this.tableTS.getModel();
         jTextField1.setText("");
         jTextField2.setText("");
         if (tell.getRowCount()!=0) {
             for (int i = tell.getRowCount()-1; i >= 0; i--) {
-                tell.removeTableModelListener(tableTELL);
                 tell.removeRow(i);
             }
         }
         if (tss.getRowCount()!=0) {
             for (int i = tss.getRowCount()-1; i >= 0; i--) {
-                tss.removeTableModelListener(tableTS);
                 tss.removeRow(i);
             }
         }
@@ -226,6 +228,7 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
                     Inicio.servicios.setTiempo( (int)tss.getValueAt(i, 0), (float)tss.getValueAt(i, 1), i);
                 }
                Inicio.servicios.completacion();
+               escribir();
             }else{
                 JOptionPane.showMessageDialog(null, "La suma de suma de las probabilidades de cada tabla tiene que ser cada una 1");
             }
@@ -259,11 +262,47 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
             e.printStackTrace();
         }
         
-        
+        JOptionPane.showMessageDialog(null, acumulador);
         if(acumulador==1){
             return true;
         }else{
             return false;
+        }
+        
+    }
+    public void escribir(){
+        String directorio = System.getProperty("user.dir");
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(directorio+"/Datos.txt");
+            pw = new PrintWriter(fichero);
+
+            pw.println(String.valueOf(Inicio.nServs));
+            pw.println(String.valueOf(Inicio.tiempo));
+            pw.println(String.valueOf(tell.getRowCount()));
+            for (int i = 0; i < tell.getRowCount(); i++) {
+                pw.println(String.valueOf((int)tell.getValueAt(i, 0)));
+                pw.println(String.valueOf((float)tell.getValueAt(i, 1)));
+            }
+            pw.println(String.valueOf(tss.getRowCount()));
+            for (int i = 0; i < tss.getRowCount(); i++) {
+                pw.println(String.valueOf((int)tss.getValueAt(i, 0)));
+                pw.println(String.valueOf((float)tss.getValueAt(i, 1)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
         }
     }
 }
