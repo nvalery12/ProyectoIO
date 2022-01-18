@@ -315,6 +315,15 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
                 pw.println(String.valueOf((int)tss.getValueAt(i, 0)));
                 pw.println(String.valueOf((float)tss.getValueAt(i, 1)));
             }
+            pw.println(String.valueOf(Inicio.unidad));
+            pw.println(String.valueOf(Inicio.clientesPermitidos));
+            pw.println(String.valueOf(Inicio.costoTSC));
+            pw.println(String.valueOf(Inicio.costoEC));
+            pw.println(String.valueOf(Inicio.costoSerO));
+            pw.println(String.valueOf(Inicio.costoServD));
+            pw.println(String.valueOf(Inicio.costoServTE));
+            pw.println(String.valueOf(Inicio.costoSistemaN));
+            pw.println(String.valueOf(Inicio.costoSistemaTE));
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -179,6 +179,15 @@ public class DecisionArchivo extends javax.swing.JPanel {
             }
             llegada.completacion();
             tservicio.completacion();
+            Inicio.unidad=br.readLine();
+            Inicio.clientesPermitidos=Integer.valueOf(br.readLine());
+            Inicio.costoTSC=Float.parseFloat(br.readLine());
+            Inicio.costoEC=Float.parseFloat(br.readLine());
+            Inicio.costoSerO=Float.parseFloat(br.readLine());
+            Inicio.costoServD=Float.parseFloat(br.readLine());
+            Inicio.costoServTE=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaN=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaTE=Float.parseFloat(br.readLine());
             //Inicio de la simulacion
             Integer tM=0; 
             Integer aT=0;

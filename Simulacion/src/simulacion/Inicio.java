@@ -27,6 +27,15 @@ public class Inicio extends javax.swing.JFrame {
     public static File archivo;
     public static List<Renglon> renglones= new ArrayList<Renglon>();
     public static FileReader fr;
+    public static String unidad;
+    public static Integer clientesPermitidos;
+    public static float costoTSC;
+    public static float costoEC;
+    public static float costoSerO;
+    public static float costoServD;
+    public static float costoServTE;
+    public static float costoSistemaN;
+    public static float costoSistemaTE;
 
     /**
      * Creates new form Inicio
