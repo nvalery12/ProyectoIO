@@ -6,6 +6,15 @@
 package simulacion;
 
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import static simulacion.Simulacion.menor;
+import static simulacion.Simulacion.servidormenor;
 
 /**
  *
@@ -107,6 +116,24 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Inicio.archivo=null;
+        Inicio.fr=null;
+        try {
+            String directorio = System.getProperty("user.dir");
+            Inicio.archivo = new File(directorio+"/Datos.txt");
+            Inicio.fr = new FileReader(Inicio.archivo);
+            Inicio.fr.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Debe crear el documento en Crear");
+        }
+        simular();
+        VisualizarSimulacion p4 = new VisualizarSimulacion();
+        p4.setSize(980, 589);
+        p4.setLocation(0, 0);
+        removeAll();
+        add(p4, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
@@ -116,4 +143,164 @@ public class DecisionArchivo extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    public void simular(){
+        Integer nEvento;
+        List<Integer> cola = new ArrayList<Integer>();
+        
+        String directorio = System.getProperty("user.dir");
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        try {
+            archivo = new File(directorio+"/Datos.txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            Inicio.nServs=Integer.parseInt(br.readLine());
+            Servidor []servidores = new Servidor[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                servidores[i] = new Servidor(i+1);
+            }
+            Inicio.tiempo=Integer.parseInt(br.readLine());
+            Integer topeTell=Integer.parseInt(br.readLine());
+            Probabilidades llegada=new Probabilidades(topeTell);
+            for (int i = 0; i < topeTell; i++) {
+                Integer tiempo=Integer.parseInt(br.readLine());
+                float probabilidad= Float.parseFloat(br.readLine());
+                llegada.setTiempo(tiempo, probabilidad, i);
+            }
+            Integer topeTS = Integer.parseInt(br.readLine());
+            Probabilidades tservicio= new Probabilidades(topeTS);
+            for (int i = 0; i < topeTS; i++) {
+                Integer tiempo = Integer.parseInt(br.readLine());
+                float proba= Float.parseFloat(br.readLine());
+                tservicio.setTiempo(tiempo, proba, i);
+            }
+            llegada.completacion();
+            tservicio.completacion();
+            //Inicio de la simulacion
+            Integer tM=0; 
+            Integer aT=0;
+            nEvento=0;
+            Integer ultimoC=0;
+            char tipo='m';
+            Renglon rPrin=new Renglon(Inicio.nServs);
+            rPrin.setNum(0);
+            rPrin.setTipo('n');
+            rPrin.setCliente(0);
+            rPrin.setaT(aT);
+            rPrin.settM(tM);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateSS(i, 0);
+            }
+            rPrin.setwL(0);
+            rPrin.setcSistema(0);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateDT(i, 9999);
+            }
+            rPrin.setnAleatorioTELL(-1);
+            rPrin.setTiempoTELL(-1);
+            rPrin.setnAleatorioTS(-1);
+            rPrin.settServicio(-1);
+            Inicio.renglones.add(new Renglon(rPrin));
+            while (tM<=Inicio.tiempo) {       
+                Boolean cambioTabla=false;
+                //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
+                //Caso 1 AT es igual a TM y menor a los DT
+                if((aT==tM)){
+                    cambioTabla=true;
+                    tipo='l';
+                    nEvento=nEvento+1;
+                    ultimoC=ultimoC+1;
+                    rPrin.setTipo(tipo);
+                    rPrin.setNum(nEvento);
+                    rPrin.setCliente(ultimoC);
+                    rPrin.setcSistema(rPrin.getcSistema()+1);
+                    boolean bandera=false;
+                    for (int i = 0; i < servidores.length; i++) {
+                        if (servidores[i].vacio()) {
+                            bandera=true;
+                            Integer lec=new Random().nextInt(99)+ 0;
+                            Integer numTs=tM + tservicio.num(lec);
+                            servidores[i].llegaCliente(ultimoC, numTs);
+                            rPrin.updateSS(i, ultimoC);
+                            rPrin.updateDT(i, numTs);
+                            rPrin.setnAleatorioTS(lec);
+                            rPrin.settServicio(numTs);
+                            break;
+                        }
+                    }
+                    if(!bandera){
+                        cola.add(ultimoC);
+                        rPrin.setwL(rPrin.getwL()+1);
+                        rPrin.settServicio(-1);
+                        rPrin.setnAleatorioTS(-1);
+                    }
+                    Integer lec2=new Random().nextInt(99)+ 0;
+                    Integer numTEL =llegada.num(lec2);
+                    rPrin.setnAleatorioTELL(lec2);
+                    rPrin.setTiempoTELL(numTEL);
+                    aT=numTEL + tM;
+                    rPrin.setaT(aT);
+                }else{
+                    if(tM==menor(Inicio.nServs, servidores)){
+                        cambioTabla=true;
+                        tipo='s';
+                        nEvento=nEvento+1;
+                        rPrin.setTipo(tipo);
+                        rPrin.setNum(nEvento);
+                        Integer saliendo=servidormenor(Inicio.nServs, servidores);
+                        rPrin.setCliente(servidores[saliendo].getClient());
+                        servidores[saliendo].sacarCliente();
+                        rPrin.updateSS(saliendo, 0);
+                        rPrin.updateDT(saliendo, 9999);
+                        rPrin.setnAleatorioTS(-1);
+                        rPrin.settServicio(-1);
+                        rPrin.setnAleatorioTELL(-1);
+                        rPrin.setTiempoTELL(-1);
+                        rPrin.setcSistema(rPrin.getcSistema()-1);
+                        if(!cola.isEmpty()){
+                            Integer prueba=new Random().nextInt(99)+ 0;
+                            rPrin.setnAleatorioTS(prueba);
+                            Integer numTs=tservicio.num(prueba);
+                            Integer newDT=tM+numTs;
+                            servidores[saliendo].llegaCliente(cola.get(0),newDT );
+                            rPrin.setnAleatorioTS(prueba);
+                            rPrin.settServicio(numTs);
+                            rPrin.updateDT(saliendo, newDT);
+                            rPrin.updateSS(saliendo, cola.get(0));
+                            rPrin.setwL(rPrin.getwL()-1);
+                            cola.remove(0);
+                        }
+                    }
+                }
+                if(cambioTabla){
+                    rPrin.tM=tM;
+                    Inicio.renglones.add(new Renglon(rPrin));
+                }
+                if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){
+                    tM=tM+1;
+                }
+
+
+            }
+            for(Renglon e:Inicio.renglones){
+                e.print();
+                System.out.println("\n");
+            }
+
+            
+            try {
+                fr.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error en cerrado");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en lectura");
+        }
+    }
 }

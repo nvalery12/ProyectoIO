@@ -8,6 +8,10 @@ package simulacion;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,6 +24,9 @@ public class Inicio extends javax.swing.JFrame {
     VisualizarSimulacion p1 = new VisualizarSimulacion();
     public static Probabilidades llegadas;
     public static Probabilidades servicios;
+    public static File archivo;
+    public static List<Renglon> renglones= new ArrayList<Renglon>();
+    public static FileReader fr;
 
     /**
      * Creates new form Inicio

@@ -5,6 +5,7 @@
  */
 package simulacion;
 
+import java.awt.BorderLayout;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
@@ -64,6 +65,11 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
         });
 
         jButton2.setText("Volver");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Limpiar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -229,11 +235,29 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
                 }
                Inicio.servicios.completacion();
                escribir();
+               DecisionArchivo pantalla = new DecisionArchivo();
+               pantalla.setSize(980, 589);
+                pantalla.setLocation(0, 0);
+                removeAll();
+                add(pantalla,BorderLayout.CENTER);
+                revalidate();
+                repaint();
             }else{
                 JOptionPane.showMessageDialog(null, "La suma de suma de las probabilidades de cada tabla tiene que ser cada una 1");
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        CrearArchivo p2 = new CrearArchivo();
+        p2.setSize(980, 589);
+        p2.setLocation(0, 0);
+        removeAll();
+        add(p2, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

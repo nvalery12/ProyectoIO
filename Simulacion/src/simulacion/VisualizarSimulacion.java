@@ -96,20 +96,20 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
        lista.add("Tipo");
        lista.add("N Cliente");
        lista.add("TM");
-        for (int i = 0; i < Simulacion.nServidores; i++) {
+        for (int i = 0; i < Inicio.nServs; i++) {
             lista.add("SS"+(i+1));
         }
         lista.add("WL");
         lista.add("Cl Sistema");
         lista.add("AT");
-        for (int i = 0; i < Simulacion.nServidores; i++) {
+        for (int i = 0; i < Inicio.nServs; i++) {
             lista.add("DT"+(i+1));
         }
         lista.add("N. Aletorio Tell");
         lista.add("TELL");
         lista.add("N. Aleatorio TS");
         lista.add("TS");
-        int tamaño=11+(Simulacion.nServidores*2);
+        int tamaño=11+(Inicio.nServs*2);
         colums= new String[tamaño];
         int i=0;
         for(String e:lista){
@@ -118,10 +118,10 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
         }
     }
     public void cargarFilas(){
-        int tamaño1=11+(Simulacion.nServidores*2);
-        filas=new String[Simulacion.tabla.size()][tamaño1];
+        int tamaño1=11+(Inicio.nServs*2);
+        filas=new String[Inicio.renglones.size()][tamaño1];
         int j=0;
-        for (Renglon renglon : Simulacion.tabla) {
+        for (Renglon renglon : Inicio.renglones) {
             int i=0;
             filas[j][i]=renglon.getNum().toString();
             i++;
@@ -130,7 +130,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             filas[j][i]=renglon.getCliente().toString();
             i++;
             filas[j][i]=renglon.gettM().toString();
-            for (int k = 0; k < Simulacion.nServidores; k++) {
+            for (int k = 0; k < Inicio.nServs; k++) {
                 i++;
                 filas[j][i]=renglon.getSSPosi(k).toString();
             }
@@ -140,7 +140,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             filas[j][i]=renglon.getcSistema().toString();
             i++;
             filas[j][i]=renglon.getaT().toString();
-            for (int k = 0; k < Simulacion.nServidores; k++) {
+            for (int k = 0; k < Inicio.nServs; k++) {
                 i++;
                 filas[j][i]=renglon.getDTPosi(k).toString();
             }
