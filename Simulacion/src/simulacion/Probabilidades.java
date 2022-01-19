@@ -15,6 +15,7 @@ public class Probabilidades {
     Integer []acumulado;
     Integer []min;
     Integer []max;
+    Integer cantidad;
 
     public Probabilidades(Integer cant) {
         tiempos = new Integer[cant];
@@ -22,9 +23,9 @@ public class Probabilidades {
         acumulado = new Integer[cant];
         min = new Integer[cant];
         max = new Integer[cant];
+        cantidad=cant;
     }
-    
-    
+
     public Integer num(Integer random){
         int i=0;
         while(i<tiempos.length){
@@ -54,4 +55,13 @@ public class Probabilidades {
             max[i]=acumulado[i]-1;
         }
     }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+    
 }

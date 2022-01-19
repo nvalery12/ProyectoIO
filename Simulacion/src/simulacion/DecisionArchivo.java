@@ -5,6 +5,17 @@
  */
 package simulacion;
 
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import static simulacion.Simulacion.menor;
+import static simulacion.Simulacion.servidormenor;
+
 /**
  *
  * @author Noel Roberto
@@ -60,23 +71,29 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jButton3.setText("Modificar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 910, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 910, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(170, 170, 170)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(170, 170, 170)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(102, 102, 102))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,12 +111,49 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Inicio.asd=2;
+        CrearArchivo p2 = new CrearArchivo();
+        p2.setSize(980, 589);
+        p2.setLocation(0, 0);
+        removeAll();
+        add(p2, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Inicio.archivo=null;
+        Inicio.fr=null;
+        try {
+            String directorio = System.getProperty("user.dir");
+            Inicio.archivo = new File(directorio+"/Datos.txt");
+            Inicio.fr = new FileReader(Inicio.archivo);
+            Inicio.fr.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Debe crear el documento en Crear");
+        }
+        simular();
+        VisualizarSimulacion p4 = new VisualizarSimulacion();
+        p4.setSize(980, 589);
+        p4.setLocation(0, 0);
+        removeAll();
+        add(p4, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Si no precargo el documento en Crear o Leer se inicializaran los datos en vacio");
+        Inicio.modificar=true;
+        CrearArchivo p2 = new CrearArchivo();
+        p2.setSize(980, 589);
+        p2.setLocation(0, 0);
+        removeAll();
+        add(p2, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -108,4 +162,173 @@ public class DecisionArchivo extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    public static void simular(){
+        Integer nEvento;
+        List<Integer> cola = new ArrayList<Integer>();
+        
+        String directorio = System.getProperty("user.dir");
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        try {
+            archivo = new File(directorio+"/Datos.txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            Inicio.nServs=Integer.parseInt(br.readLine());
+            Servidor []servidores = new Servidor[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                servidores[i] = new Servidor(i+1);
+            }
+            Inicio.tiempo=Integer.parseInt(br.readLine());
+            Integer topeTell=Integer.parseInt(br.readLine());
+            Inicio.llegadas=new Probabilidades(topeTell);
+            for (int i = 0; i < topeTell; i++) {
+                Integer tiempo=Integer.parseInt(br.readLine());
+                float probabilidad= Float.parseFloat(br.readLine());
+                Inicio.llegadas.setTiempo(tiempo, probabilidad, i);
+            }
+            Integer topeTS = Integer.parseInt(br.readLine());
+            Inicio.servicios= new Probabilidades(topeTS);
+            for (int i = 0; i < topeTS; i++) {
+                Integer tiempo = Integer.parseInt(br.readLine());
+                float proba= Float.parseFloat(br.readLine());
+                Inicio.servicios.setTiempo(tiempo, proba, i);
+            }
+            Inicio.llegadas.completacion();
+            Inicio.servicios.completacion();
+            Inicio.unidad=br.readLine();
+            Inicio.clientesPermitidos=Integer.valueOf(br.readLine());
+            Inicio.costoTSC=Float.parseFloat(br.readLine());
+            Inicio.costoEC=Float.parseFloat(br.readLine());
+            Inicio.costoSerO=Float.parseFloat(br.readLine());
+            Inicio.costoServD=Float.parseFloat(br.readLine());
+            Inicio.costoServTE=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaN=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaTE=Float.parseFloat(br.readLine());
+            //Inicio de la simulacion
+            Integer tM=0; 
+            Integer aT=0;
+            nEvento=0;
+            Integer ultimoC=0;
+            char tipo='m';
+            Renglon rPrin=new Renglon(Inicio.nServs);
+            rPrin.setNum(0);
+            rPrin.setTipo('n');
+            rPrin.setCliente(0);
+            rPrin.setaT(aT);
+            rPrin.settM(tM);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateSS(i, 0);
+            }
+            rPrin.setwL(0);
+            rPrin.setcSistema(0);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateDT(i, 9999);
+            }
+            rPrin.setnAleatorioTELL(-1);
+            rPrin.setTiempoTELL(-1);
+            rPrin.setnAleatorioTS(-1);
+            rPrin.settServicio(-1);
+            Inicio.renglones.add(new Renglon(rPrin));
+            while (tM<=Inicio.tiempo) {       
+                Boolean cambioTabla=false;
+                //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
+                //Caso 1 AT es igual a TM y menor a los DT
+                if((aT==tM)){
+                    cambioTabla=true;
+                    tipo='l';
+                    nEvento=nEvento+1;
+                    ultimoC=ultimoC+1;
+                    rPrin.setTipo(tipo);
+                    rPrin.setNum(nEvento);
+                    rPrin.setCliente(ultimoC);
+                    rPrin.setcSistema(rPrin.getcSistema()+1);
+                    boolean bandera=false;
+                    for (int i = 0; i < servidores.length; i++) {
+                        if (servidores[i].vacio()) {
+                            bandera=true;
+                            Integer lec=new Random().nextInt(99)+ 0;
+                            Integer numTs=tM + Inicio.servicios.num(lec);
+                            servidores[i].llegaCliente(ultimoC, numTs);
+                            rPrin.updateSS(i, ultimoC);
+                            rPrin.updateDT(i, numTs);
+                            rPrin.setnAleatorioTS(lec);
+                            rPrin.settServicio(numTs);
+                            break;
+                        }
+                    }
+                    if(!bandera){
+                        cola.add(ultimoC);
+                        rPrin.setwL(rPrin.getwL()+1);
+                        rPrin.settServicio(-1);
+                        rPrin.setnAleatorioTS(-1);
+                    }
+                    Integer lec2=new Random().nextInt(99)+ 0;
+                    Integer numTEL =Inicio.llegadas.num(lec2);
+                    rPrin.setnAleatorioTELL(lec2);
+                    rPrin.setTiempoTELL(numTEL);
+                    aT=numTEL + tM;
+                    rPrin.setaT(aT);
+                }else{
+                    if(tM==menor(Inicio.nServs, servidores)){
+                        cambioTabla=true;
+                        tipo='s';
+                        nEvento=nEvento+1;
+                        rPrin.setTipo(tipo);
+                        rPrin.setNum(nEvento);
+                        Integer saliendo=servidormenor(Inicio.nServs, servidores);
+                        rPrin.setCliente(servidores[saliendo].getClient());
+                        servidores[saliendo].sacarCliente();
+                        rPrin.updateSS(saliendo, 0);
+                        rPrin.updateDT(saliendo, 9999);
+                        rPrin.setnAleatorioTS(-1);
+                        rPrin.settServicio(-1);
+                        rPrin.setnAleatorioTELL(-1);
+                        rPrin.setTiempoTELL(-1);
+                        rPrin.setcSistema(rPrin.getcSistema()-1);
+                        if(!cola.isEmpty()){
+                            Integer prueba=new Random().nextInt(99)+ 0;
+                            rPrin.setnAleatorioTS(prueba);
+                            Integer numTs=Inicio.servicios.num(prueba);
+                            Integer newDT=tM+numTs;
+                            servidores[saliendo].llegaCliente(cola.get(0),newDT );
+                            rPrin.setnAleatorioTS(prueba);
+                            rPrin.settServicio(numTs);
+                            rPrin.updateDT(saliendo, newDT);
+                            rPrin.updateSS(saliendo, cola.get(0));
+                            rPrin.setwL(rPrin.getwL()-1);
+                            cola.remove(0);
+                        }
+                    }
+                }
+                if(cambioTabla){
+                    rPrin.tM=tM;
+                    Inicio.renglones.add(new Renglon(rPrin));
+                }
+                if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){
+                    tM=tM+1;
+                }
+
+
+            }
+            for(Renglon e:Inicio.renglones){
+                e.print();
+                System.out.println("\n");
+            }
+
+            
+            try {
+                fr.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error en cerrado");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en lectura");
+        }
+    }
 }
