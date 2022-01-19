@@ -27,7 +27,6 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
      */
     public VisualizarSimulacion() {
         cargarColumnas();
-        cargarFilas();
         initComponents();
         tableListiner=(DefaultTableModel)this.table.getModel();
         
@@ -46,6 +45,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
         table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(153, 255, 255));
         setMinimumSize(new java.awt.Dimension(980, 589));
@@ -71,6 +71,13 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             }
         });
 
+        jButton3.setText("Simular");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,7 +87,9 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addGap(114, 114, 114)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -93,7 +102,8 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap(134, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -112,6 +122,50 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
                 revalidate();
                 repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (tableListiner.getRowCount()!=0) {
+            for (int i = tableListiner.getRowCount()-1; i >= 0; i--) {
+                tableListiner.removeRow(i);
+            }
+        }
+        
+        for (Renglon renglone : Inicio.renglones) {
+            String []fil = new String[11+(2*Inicio.nServs)];
+            int i=0;
+            fil[i]=renglone.getNum().toString();
+            i++;
+            fil[i]=Character.toString(renglone.getTipo());
+            i++;
+            fil[i]=renglone.getCliente().toString();
+            i++;
+            fil[i]=renglone.gettM().toString();
+            for (int k = 0; k < Inicio.nServs; k++) {
+                i++;
+                fil[i]=renglone.getSSPosi(k).toString();
+            }
+            i++;
+            fil[i]=renglone.getwL().toString();
+            i++;
+            fil[i]=renglone.getcSistema().toString();
+            i++;
+            fil[i]=renglone.getaT().toString();
+            for (int k = 0; k < Inicio.nServs; k++) {
+                i++;
+                fil[i]=renglone.getDTPosi(k).toString();
+            }
+            i++;
+            fil[i]=renglone.getnAleatorioTELL().toString();
+            i++;
+            fil[i]=renglone.getTiempoTELL().toString();
+            i++;
+            fil[i]=renglone.getnAleatorioTS().toString();
+            i++;
+            fil[i]=renglone.gettServicio().toString();
+            tableListiner.addRow(fil);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     public void cargarColumnas(){
@@ -182,6 +236,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
