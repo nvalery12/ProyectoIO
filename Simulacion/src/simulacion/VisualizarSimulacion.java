@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
@@ -19,6 +20,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
     JTable tabla;
     String []colums;
     String[][]filas;
+    DefaultTableModel tableListiner;
 
     /**
      * Creates new form VisualizarSimulacion
@@ -27,7 +29,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
         cargarColumnas();
         cargarFilas();
         initComponents();
-        
+        tableListiner=(DefaultTableModel)this.table.getModel();
         
     }
 
@@ -56,7 +58,6 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
         jScrollPane1.setViewportView(table);
 
         jButton1.setText("Estadisticas");
-        jButton1.setActionCommand("Estadisticas");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -79,7 +80,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addGap(18, 18, 18)
+                        .addGap(114, 114, 114)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))

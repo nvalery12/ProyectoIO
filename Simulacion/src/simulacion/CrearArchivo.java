@@ -19,6 +19,9 @@ public class CrearArchivo extends javax.swing.JPanel {
      */
     public CrearArchivo() {
         initComponents();
+        if(Inicio.modificar){
+            llenado();
+        }
     }
 
     /**
@@ -280,6 +283,16 @@ public class CrearArchivo extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (Inicio.modificar) {
+            Inicio.modificar=false;
+        }
+        DecisionArchivo pantalla = new DecisionArchivo();
+               pantalla.setSize(980, 589);
+                pantalla.setLocation(0, 0);
+                removeAll();
+                add(pantalla,BorderLayout.CENTER);
+                revalidate();
+                repaint();
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
@@ -310,4 +323,17 @@ public class CrearArchivo extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
+    public void llenado(){
+        jTextField1.setText(String.valueOf(Inicio.tiempo));
+        jTextField2.setText(String.valueOf(Inicio.nServs));
+        jTextField3.setText(String.valueOf(Inicio.clientesPermitidos));
+        jTextField4.setText(String.valueOf(Inicio.costoTSC));
+        jTextField5.setText(String.valueOf(Inicio.costoEC));
+        jTextField6.setText(String.valueOf(Inicio.costoSerO));
+        jTextField7.setText(String.valueOf(Inicio.costoServD));
+        jTextField8.setText(String.valueOf(Inicio.costoServTE));
+        jTextField9.setText(String.valueOf(Inicio.costoSistemaN));
+        jTextField10.setText(String.valueOf(Inicio.costoSistemaTE));
+        jComboBox1.setSelectedItem(Inicio.unidad);
+    }
 }

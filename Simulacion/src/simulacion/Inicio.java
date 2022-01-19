@@ -36,6 +36,7 @@ public class Inicio extends javax.swing.JFrame {
     public static float costoServTE;
     public static float costoSistemaN;
     public static float costoSistemaTE;
+    public static boolean modificar=false;
 
     /**
      * Creates new form Inicio

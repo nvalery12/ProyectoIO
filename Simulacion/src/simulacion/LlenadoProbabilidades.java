@@ -26,6 +26,9 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
         initComponents();
         tell=(DefaultTableModel)this.tableTELL.getModel();
         tss=(DefaultTableModel)this.tableTS.getModel();
+        if (Inicio.modificar) {
+            llenar();
+        }
     }
 
     /**
@@ -234,6 +237,7 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
                     Inicio.servicios.setTiempo( (int)tss.getValueAt(i, 0), (float)tss.getValueAt(i, 1), i);
                 }
                Inicio.servicios.completacion();
+               Inicio.modificar=false;
                escribir();
                DecisionArchivo pantalla = new DecisionArchivo();
                pantalla.setSize(980, 589);
@@ -336,6 +340,15 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
            } catch (Exception e2) {
               e2.printStackTrace();
            }
+        }
+    }
+    public void llenar(){
+        JOptionPane.showMessageDialog(null, "Cantidad:"+Inicio.llegadas.tiempos.length);
+        for (int i = 0; i < Inicio.llegadas.tiempos.length; i++) {
+            tell.addRow(new Object[]{Inicio.llegadas.tiempos[i],Inicio.llegadas.probabilidades[i]});
+        }
+        for (int i = 0; i < Inicio.servicios.tiempos.length; i++) {
+            tss.addRow(new Object[]{Inicio.servicios.tiempos[i],Inicio.servicios.probabilidades[i]});
         }
     }
 }
