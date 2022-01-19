@@ -163,7 +163,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
-    public void simular(){
+    public static void simular(){
         Integer nEvento;
         List<Integer> cola = new ArrayList<Integer>();
         

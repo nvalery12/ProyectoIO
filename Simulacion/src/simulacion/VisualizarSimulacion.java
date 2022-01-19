@@ -129,7 +129,11 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             for (int i = tableListiner.getRowCount()-1; i >= 0; i--) {
                 tableListiner.removeRow(i);
             }
+            Inicio.renglones.clear();
+            DecisionArchivo.simular();
+            
         }
+        
         
         for (Renglon renglone : Inicio.renglones) {
             String []fil = new String[11+(2*Inicio.nServs)];
