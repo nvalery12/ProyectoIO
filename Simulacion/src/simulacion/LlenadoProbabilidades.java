@@ -343,7 +343,8 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
         }
     }
     public void llenar(){
-        JOptionPane.showMessageDialog(null, "Cantidad:"+Inicio.llegadas.tiempos.length);
+        jTextField1.setText(String.valueOf(Inicio.llegadas.getCantidad()));
+        jTextField2.setText(String.valueOf(Inicio.servicios.getCantidad()));
         for (int i = 0; i < Inicio.llegadas.tiempos.length; i++) {
             tell.addRow(new Object[]{Inicio.llegadas.tiempos[i],Inicio.llegadas.probabilidades[i]});
         }

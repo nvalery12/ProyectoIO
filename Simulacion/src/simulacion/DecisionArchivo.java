@@ -144,6 +144,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Si no precargo el documento en Crear o Leer se inicializaran los datos en vacio");
         Inicio.modificar=true;
         CrearArchivo p2 = new CrearArchivo();
         p2.setSize(980, 589);
@@ -182,21 +183,21 @@ public class DecisionArchivo extends javax.swing.JPanel {
             }
             Inicio.tiempo=Integer.parseInt(br.readLine());
             Integer topeTell=Integer.parseInt(br.readLine());
-            Probabilidades llegada=new Probabilidades(topeTell);
+            Inicio.llegadas=new Probabilidades(topeTell);
             for (int i = 0; i < topeTell; i++) {
                 Integer tiempo=Integer.parseInt(br.readLine());
                 float probabilidad= Float.parseFloat(br.readLine());
-                llegada.setTiempo(tiempo, probabilidad, i);
+                Inicio.llegadas.setTiempo(tiempo, probabilidad, i);
             }
             Integer topeTS = Integer.parseInt(br.readLine());
-            Probabilidades tservicio= new Probabilidades(topeTS);
+            Inicio.servicios= new Probabilidades(topeTS);
             for (int i = 0; i < topeTS; i++) {
                 Integer tiempo = Integer.parseInt(br.readLine());
                 float proba= Float.parseFloat(br.readLine());
-                tservicio.setTiempo(tiempo, proba, i);
+                Inicio.servicios.setTiempo(tiempo, proba, i);
             }
-            llegada.completacion();
-            tservicio.completacion();
+            Inicio.llegadas.completacion();
+            Inicio.servicios.completacion();
             Inicio.unidad=br.readLine();
             Inicio.clientesPermitidos=Integer.valueOf(br.readLine());
             Inicio.costoTSC=Float.parseFloat(br.readLine());
@@ -249,7 +250,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         if (servidores[i].vacio()) {
                             bandera=true;
                             Integer lec=new Random().nextInt(99)+ 0;
-                            Integer numTs=tM + tservicio.num(lec);
+                            Integer numTs=tM + Inicio.servicios.num(lec);
                             servidores[i].llegaCliente(ultimoC, numTs);
                             rPrin.updateSS(i, ultimoC);
                             rPrin.updateDT(i, numTs);
@@ -265,7 +266,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         rPrin.setnAleatorioTS(-1);
                     }
                     Integer lec2=new Random().nextInt(99)+ 0;
-                    Integer numTEL =llegada.num(lec2);
+                    Integer numTEL =Inicio.llegadas.num(lec2);
                     rPrin.setnAleatorioTELL(lec2);
                     rPrin.setTiempoTELL(numTEL);
                     aT=numTEL + tM;
@@ -290,7 +291,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         if(!cola.isEmpty()){
                             Integer prueba=new Random().nextInt(99)+ 0;
                             rPrin.setnAleatorioTS(prueba);
-                            Integer numTs=tservicio.num(prueba);
+                            Integer numTs=Inicio.servicios.num(prueba);
                             Integer newDT=tM+numTs;
                             servidores[saliendo].llegaCliente(cola.get(0),newDT );
                             rPrin.setnAleatorioTS(prueba);
