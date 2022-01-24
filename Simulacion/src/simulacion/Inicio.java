@@ -63,7 +63,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 600));
+        setMinimumSize(new java.awt.Dimension(1100, 700));
         setPreferredSize(new java.awt.Dimension(1000, 600));
 
         panelInicio.setBackground(new java.awt.Color(153, 255, 255));

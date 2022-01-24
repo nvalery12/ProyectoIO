@@ -110,6 +110,13 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Reporte pantalla = new Reporte();
+               pantalla.setSize(980, 589);
+                pantalla.setLocation(0, 0);
+                removeAll();
+                add(pantalla,BorderLayout.CENTER);
+                revalidate();
+                repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

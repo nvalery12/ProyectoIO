@@ -5,6 +5,11 @@
  */
 package simulacion;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Noel Roberto
@@ -16,6 +21,7 @@ public class Reporte extends javax.swing.JPanel {
      */
     public Reporte() {
         initComponents();
+        llenar();
     }
 
     /**
@@ -27,26 +33,277 @@ public class Reporte extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaPorcentaje = new javax.swing.JTable();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField10 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jTextField11 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField12 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(153, 255, 255));
+        setMinimumSize(new java.awt.Dimension(980, 589));
+
+        jLabel1.setText("Cantidad de clientes que no esperan:");
+
+        jLabel2.setText("Cantidad de clientes que se van sin ser atendidos:");
+
+        jLabel3.setText("Probabilidad de esperar:");
+
+        jLabel4.setText("Cantidad promedio de clientes en cola: ");
+
+        jLabel5.setText("Cantidad promedio de clientes en sistema: ");
+
+        jLabel6.setText("Tiempo promedio de un cliente en cola:");
+
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Tiempo promedio de un cliente en sistema:");
+
+        jLabel8.setText("Tiempo promedio de espera del cliente que hace cola");
+
+        jLabel9.setText("Tiempo promedio adicional que se trabaja despues de cerrar");
+
+        jLabel10.setText("Porcentaje de utilizacion de cada servidor y general:");
+
+        tablaPorcentaje.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Servidor", "Utilizacion"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaPorcentaje);
+        if (tablaPorcentaje.getColumnModel().getColumnCount() > 0) {
+            tablaPorcentaje.getColumnModel().getColumn(0).setResizable(false);
+            tablaPorcentaje.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jLabel11.setText("Costo Servicios");
+
+        jLabel12.setText("Costo Espera/Demora Cliente");
+
+        jLabel13.setText("Costo del Sistema");
+
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(357, 357, 357)
+                        .addComponent(jButton1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel10)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextField7))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextField6))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextField5))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(72, 72, 72)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField12))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField11))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField10)))
+                                .addGap(217, 217, 217))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 150, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)
+                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        VisualizarSimulacion p4 = new VisualizarSimulacion();
+               p4.setSize(980, 589);
+                p4.setLocation(0, 0);
+                removeAll();
+                add(p4,BorderLayout.CENTER);
+                revalidate();
+                repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTable tablaPorcentaje;
     // End of variables declaration//GEN-END:variables
     public Integer cantidadClientesNoEsperan(){
         Integer clientes=0;
         for (Renglon e : Inicio.renglones) {
             for (int i = 0; i < e.getsS().length; i++) {
-                if (e.getCliente()==e.getSSPosi(i)) {
+                if ((e.getCliente()==e.getSSPosi(i))&&(e.getCliente()!=0)) {
                     clientes++;
                 }
             }
@@ -57,7 +314,7 @@ public class Reporte extends javax.swing.JPanel {
     public Integer clientesSinSerAtendidos(){
         return Inicio.renglones.get(Inicio.renglones.size()-1).getwL();
     }
-    public float clientesQueEsperaron(){
+    public float probEsperar(){
         int clientes=0;
         int clientWL=0;
         int tmA=0;
@@ -194,5 +451,176 @@ public class Reporte extends javax.swing.JPanel {
         tiempoUsoTotal=tiempoUsoTotal/(Inicio.nServs);
         return prom/Inicio.nServs;
         
+    }
+    public float tiempoPromedioDespuesCerrar(){
+        List<Integer>quedan= new ArrayList<Integer>();
+        for (int i = 0; i < Inicio.nServs; i++) {
+            if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)!=0) {
+                quedan.add(Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i));
+            }
+        }
+        int acumulador=0;
+        for (Integer e : quedan) {
+            for (Renglon renglone : Inicio.renglones) {
+                for (int i = 0; i < Inicio.nServs; i++) {
+                    if (renglone.getSSPosi(i)==e) {
+                        acumulador=acumulador+renglone.getDTPosi(i);
+                    }
+                }
+            }
+        }
+        return acumulador/Inicio.nServs;
+        
+    }
+    
+    public float tiempoPromedioClienteSistema(){
+        int ultimoCliente=0;
+        int cant=0;
+        for (Renglon renglone : Inicio.renglones) {
+            if ((renglone.getTipo()=='s')&&(renglone.getCliente()>ultimoCliente)) {
+                ultimoCliente=renglone.getCliente();
+            }
+            if (renglone.getTipo()=='l') {
+                cant++;
+            }
+        }
+        int acumulador=0;
+        for (int i = ultimoCliente; i > 0; i--) {
+            int llegada=0;
+            for (Renglon renglone : Inicio.renglones) {
+                if ((renglone.getCliente()==i)&&(renglone.getTipo()=='l')) {
+                    llegada=renglone.gettM();
+                }
+                if ((renglone.getCliente()==i)&&(renglone.getTipo()=='s')) {
+                    acumulador=renglone.gettM()-llegada;
+                }
+            }
+        }
+        return acumulador/cant;
+    }
+    
+    public float tiempoPromedioClientesCola(){
+        int cant=0;
+        for (Renglon renglone : Inicio.renglones) {
+            if (renglone.getTipo()=='l') {
+                cant++;
+            }
+        }
+        int acumulador=0;
+        for (int i = 1; i < cant; i++) {
+            for (Renglon renglone : Inicio.renglones) {
+                int llegada=0;
+                if ((renglone.getTipo()=='l')&&(renglone.getCliente()==i)) {
+                    llegada=renglone.gettM();
+                }
+                for (int j = 0; j < Inicio.nServs; j++) {
+                    if (renglone.getSSPosi(j)==i) {
+                        acumulador=acumulador+renglone.gettM()-llegada;
+                    }
+                }
+            }
+        }
+        return acumulador/cant;
+    }
+    
+    public float costoSistema(){
+        float acumulador=0;
+        acumulador=Inicio.tiempo;
+        int mayor=0;
+        for (int i = 0; i < Inicio.nServs; i++) {
+            if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)!=0) {
+                if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)>mayor) {
+                    mayor=Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i);
+                }
+            }
+        }
+        mayor=mayor-Inicio.tiempo;
+        acumulador=acumulador*Inicio.costoSistemaN;
+        
+        acumulador=acumulador+(Inicio.costoSistemaTE*mayor);
+        
+        return acumulador;
+    }
+    
+    public float costoCliente(){
+        int ultimoCliente=0;
+        for (Renglon renglone : Inicio.renglones) {
+            if ((renglone.getTipo()=='l')&&(ultimoCliente>renglone.getCliente())) {
+                ultimoCliente=renglone.getCliente();
+            }
+        }
+        float acumulador=0;
+        for (int i = ultimoCliente; i > 0; i--) {
+            for (Renglon renglone : Inicio.renglones) {
+                boolean bandera=false;
+                int llegada=0;
+                if ((renglone.getCliente()==i)&&(renglone.getTipo()=='l')) {
+                    llegada=renglone.gettM();
+                }
+                for (int j = 0; j < Inicio.nServs; j++) {
+                    if ((renglone.getSSPosi(j)==i)) {
+                        acumulador=acumulador+((renglone.gettM()-llegada)*Inicio.costoEC);
+                        acumulador=acumulador+((renglone.getDTPosi(i)-renglone.gettM()*Inicio.costoTSC));
+                        bandera=true;
+                    }
+                }
+                if (bandera) {
+                    break;
+                }
+                
+            }
+        }
+        return acumulador;
+    }
+    
+    public float costoServidor(){
+        float suma=0;
+        for (int i = 0; i < Inicio.nServs; i++) {
+            boolean bandera=false;
+            int llegada=0;
+            for (Renglon renglone : Inicio.renglones) {
+                if ((renglone.getSSPosi(i)==0)&&(!bandera)) {
+                    llegada=renglone.gettM();
+                    bandera=true;
+                }
+                if ((renglone.getSSPosi(i)!=0)&&(bandera)) {
+                    suma=suma+renglone.gettM()-llegada;
+                    bandera=false;
+                }
+            }
+        }
+        float ocupado=Inicio.tiempo-suma;
+        float extra=0;
+        for (int i = 0; i < Inicio.nServs; i++) {
+            extra=extra+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
+        }
+        suma=suma*Inicio.costoServD;
+        ocupado=ocupado*Inicio.costoSerO;
+        extra=extra*Inicio.costoServTE;
+        return suma+ocupado+extra;
+    }
+    
+    public void llenar(){
+        jTextField1.setText(String.valueOf(cantidadClientesNoEsperan()));
+        jTextField2.setText(String.valueOf(clientesSinSerAtendidos()));
+        jTextField3.setText(String.valueOf(probEsperar()));
+        jTextField4.setText(String.valueOf(clientesPromedioCola()));
+        jTextField5.setText(String.valueOf(clientesPromedioSistema()));
+        jTextField6.setText(String.valueOf(tiempoPromedioClientesCola()));
+        jTextField7.setText(String.valueOf(tiempoPromedioClienteSistema()));
+        DefaultTableModel table =(DefaultTableModel)this.tablaPorcentaje.getModel();
+        table.addRow(new Object[]{
+            "Sistema",promedioUsoSistema()
+        });
+        float usos[]=promedioUsoServidor();
+        for (int i = 0; i < Inicio.nServs; i++) {
+            int id=i+1;
+            table.addRow(new Object[]{
+                id,usos[i]
+            });
+        }
+        jTextField10.setText(String.valueOf(costoServidor()));
+        jTextField11.setText(String.valueOf(costoCliente()));
+        jTextField12.setText(String.valueOf(costoSistema()));
     }
 }

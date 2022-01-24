@@ -122,6 +122,9 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (!Inicio.renglones.isEmpty()) {
+            Inicio.renglones.clear();
+        }
         Inicio.archivo=null;
         Inicio.fr=null;
         try {
