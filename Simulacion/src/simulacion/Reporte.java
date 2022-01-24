@@ -8,6 +8,7 @@ package simulacion;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -315,25 +316,25 @@ public class Reporte extends javax.swing.JPanel {
         return Inicio.renglones.get(Inicio.renglones.size()-1).getwL();
     }
     public float probEsperar(){
-        int clientes=0;
-        int clientWL=0;
+        float clientes=0;
+        float clientWL=0;
         int tmA=0;
         int wL=0;
         char l='n';
-        
+        boolean bandera=false;
         for (Renglon renglone : Inicio.renglones) {
             if(renglone.getTipo()=='l'){
                 clientes++;
             }
             if ((renglone.getNum()!=0)&&(renglone.getNum()!=1)) {
-                boolean bandera=false;
+                
                 for (int i = 0; i < renglone.getsS().length; i++) {
                     if(renglone.getCliente()==renglone.getSSPosi(i)){
                         bandera=true;
                         break;
                     }
                 }
-                if(!bandera){
+                if(!bandera&&(renglone.getTipo()=='l')){
                     clientWL++;
                 }
                 if((l=='l')&&(renglone.gettM()==tmA)&&(renglone.getwL()==0)&&(wL==1)){
@@ -343,8 +344,9 @@ public class Reporte extends javax.swing.JPanel {
             tmA=renglone.gettM();
             wL=renglone.getwL();
             l=renglone.getTipo();
+            bandera=false;
         }
-        return (clientWL/clientes);
+        return clientWL/clientes;
     }
     
     public float clientesPromedioSistema(){
@@ -354,9 +356,9 @@ public class Reporte extends javax.swing.JPanel {
                 maximo=renglone.getcSistema();
             }
         }
-        int acumulador1=0;
+        float acumulador1=0;
         for (int i = maximo; i > 0; i--) {
-            int acumulador2=0;
+            float acumulador2=0;
             int tiempoCuandoSeLlegoALaCantidad=0;
             boolean bandera=false;
             for (Renglon renglone : Inicio.renglones) {
@@ -381,9 +383,9 @@ public class Reporte extends javax.swing.JPanel {
                 maximo=renglone.getwL();
             }
         }
-        int acumulador1=0;
+        float acumulador1=0;
         for (int i = maximo; i > 0; i--) {
-            int acumulador2=0;
+            float acumulador2=0;
             int tiempoCuandoSeLlegoALaCantidad=0;
             boolean bandera=false;
             for (Renglon renglone : Inicio.renglones) {
@@ -404,52 +406,68 @@ public class Reporte extends javax.swing.JPanel {
     
     public float []promedioUsoServidor(){
         float []promedios=new float[Inicio.nServs];
-        Integer []tiempo_uso_sev= new Integer[Inicio.nServs];
+        float []tiempo_uso_sev= new float[Inicio.nServs];
         for (int i = 0; i < Inicio.nServs; i++) {
             tiempo_uso_sev[i]=0;
+            promedios[i]=0;
         }
-        int momentoInicial=0;
+        
         for (int i = 0; i < Inicio.nServs; i++) {
+            int momentoInicial=0;
+            boolean bandera=false;
             for (Renglon renglone : Inicio.renglones) {
-                if (renglone.getCliente()==9999) {
+                if ((renglone.getSSPosi(i)==0)&&(bandera)) {
                     tiempo_uso_sev[i]=tiempo_uso_sev[i]+renglone.gettM()-momentoInicial;
                     momentoInicial=0;
+                    bandera=false;
                 } 
-                if((renglone.getCliente()!=9999)&&(momentoInicial==0)){
+                if((renglone.getSSPosi(i)!=0)&&(!bandera)){
                     momentoInicial=renglone.gettM();
+                    bandera=true;
                 }
             }
-            promedios[i]=tiempo_uso_sev[i]/Inicio.renglones.get(Inicio.renglones.size()-1).gettM();
+            if (bandera) {
+                tiempo_uso_sev[i]=tiempo_uso_sev[i]+Inicio.tiempo-momentoInicial;
+            }
+            float tiempo=Inicio.tiempo;
+            promedios[i]=tiempo_uso_sev[i]/tiempo;
         }
         return promedios;
     }
     public float promedioUsoSistema(){
         float []promedios=new float[Inicio.nServs];
-        Integer []tiempo_uso_sev= new Integer[Inicio.nServs];
+        float []tiempo_uso_sev= new float[Inicio.nServs];
         for (int i = 0; i < Inicio.nServs; i++) {
             tiempo_uso_sev[i]=0;
+            promedios[i]=0;
         }
-        int momentoInicial=0;
-        float tiempoUsoTotal=0;
+        
         for (int i = 0; i < Inicio.nServs; i++) {
+            int momentoInicial=0;
+            boolean bandera=false;
             for (Renglon renglone : Inicio.renglones) {
-                if ((renglone.getCliente()==9999)&&(momentoInicial!=0)) {
+                if ((renglone.getSSPosi(i)==0)&&(bandera)) {
                     tiempo_uso_sev[i]=tiempo_uso_sev[i]+renglone.gettM()-momentoInicial;
                     momentoInicial=0;
+                    bandera=false;
                 } 
-                if((renglone.getCliente()!=9999)&&(momentoInicial==0)){
+                if((renglone.getSSPosi(i)!=0)&&(!bandera)){
                     momentoInicial=renglone.gettM();
+                    bandera=true;
                 }
             }
-            promedios[i]=tiempo_uso_sev[i]/Inicio.renglones.get(Inicio.renglones.size()-1).gettM();
-            tiempoUsoTotal=tiempoUsoTotal+tiempo_uso_sev[i];
+            if (bandera) {
+                tiempo_uso_sev[i]=tiempo_uso_sev[i]+Inicio.tiempo-momentoInicial;
+            }
+            float tiempo=Inicio.tiempo;
+            promedios[i]=tiempo_uso_sev[i]/tiempo;
         }
         float prom=0;
         for (int i = 0; i < Inicio.nServs; i++) {
             prom=prom+promedios[i];
         }
-        tiempoUsoTotal=tiempoUsoTotal/(Inicio.nServs);
-        return prom/Inicio.nServs;
+        float cantidad=Inicio.nServs;
+        return prom / cantidad;
         
     }
     public float tiempoPromedioDespuesCerrar(){
@@ -459,68 +477,67 @@ public class Reporte extends javax.swing.JPanel {
                 quedan.add(Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i));
             }
         }
-        int acumulador=0;
-        for (Integer e : quedan) {
-            for (Renglon renglone : Inicio.renglones) {
-                for (int i = 0; i < Inicio.nServs; i++) {
-                    if (renglone.getSSPosi(i)==e) {
-                        acumulador=acumulador+renglone.getDTPosi(i);
-                    }
-                }
-            }
+        float acumulador=0;
+        for (int i = 0; i < Inicio.nServs; i++) {
+            acumulador=acumulador+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
         }
-        return acumulador/Inicio.nServs;
+        float servidores=Inicio.nServs;
+        return acumulador/servidores;
         
     }
     
     public float tiempoPromedioClienteSistema(){
         int ultimoCliente=0;
-        int cant=0;
+        float max;
         for (Renglon renglone : Inicio.renglones) {
-            if ((renglone.getTipo()=='s')&&(renglone.getCliente()>ultimoCliente)) {
+            if (renglone.getCliente()>ultimoCliente) {
                 ultimoCliente=renglone.getCliente();
             }
-            if (renglone.getTipo()=='l') {
-                cant++;
-            }
         }
-        int acumulador=0;
+        float acumulador=0;
+        max=ultimoCliente;
         for (int i = ultimoCliente; i > 0; i--) {
-            int llegada=0;
-            for (Renglon renglone : Inicio.renglones) {
-                if ((renglone.getCliente()==i)&&(renglone.getTipo()=='l')) {
-                    llegada=renglone.gettM();
+            float llegada=0;
+            for (Renglon e : Inicio.renglones) {
+                
+                if ((e.getCliente()==i)&&(e.getTipo()=='l')) {
+                    llegada=e.gettM();
                 }
-                if ((renglone.getCliente()==i)&&(renglone.getTipo()=='s')) {
-                    acumulador=renglone.gettM()-llegada;
+                if ((e.getCliente()==i)&&(e.getTipo()=='s')) {
+                    acumulador=acumulador+e.gettM()-llegada;
                 }
             }
         }
-        return acumulador/cant;
+        return acumulador/max;
     }
     
     public float tiempoPromedioClientesCola(){
-        int cant=0;
+        int ultimoCliente=0;
+        float max;
         for (Renglon renglone : Inicio.renglones) {
-            if (renglone.getTipo()=='l') {
-                cant++;
+            if (renglone.getCliente()>ultimoCliente) {
+                ultimoCliente=renglone.getCliente();
             }
         }
-        int acumulador=0;
-        for (int i = 1; i < cant; i++) {
-            for (Renglon renglone : Inicio.renglones) {
-                int llegada=0;
-                if ((renglone.getTipo()=='l')&&(renglone.getCliente()==i)) {
-                    llegada=renglone.gettM();
+        float acumulador=0;
+        max=ultimoCliente;
+        for (int i = ultimoCliente; i > 0; i--) {
+            float llegada=0;
+            boolean bandera=false;
+            for (Renglon e : Inicio.renglones) {
+                
+                if ((e.getCliente()==i)&&(e.getTipo()=='l')) {
+                    llegada=e.gettM();
                 }
                 for (int j = 0; j < Inicio.nServs; j++) {
-                    if (renglone.getSSPosi(j)==i) {
-                        acumulador=acumulador+renglone.gettM()-llegada;
+                    if ((!bandera)&&(e.getSSPosi(j)==i)) {
+                        bandera=true;
+                        acumulador=acumulador+e.gettM()-llegada;
                     }
                 }
             }
         }
-        return acumulador/cant;
+        return acumulador/max;
     }
     
     public float costoSistema(){
@@ -545,27 +562,26 @@ public class Reporte extends javax.swing.JPanel {
     public float costoCliente(){
         int ultimoCliente=0;
         for (Renglon renglone : Inicio.renglones) {
-            if ((renglone.getTipo()=='l')&&(ultimoCliente>renglone.getCliente())) {
+            if ((renglone.getTipo()=='l')&&(ultimoCliente<renglone.getCliente())) {
                 ultimoCliente=renglone.getCliente();
             }
         }
         float acumulador=0;
         for (int i = ultimoCliente; i > 0; i--) {
+            int llegada=0;
+            boolean bandera=false;
             for (Renglon renglone : Inicio.renglones) {
-                boolean bandera=false;
-                int llegada=0;
+                
+                
                 if ((renglone.getCliente()==i)&&(renglone.getTipo()=='l')) {
                     llegada=renglone.gettM();
                 }
                 for (int j = 0; j < Inicio.nServs; j++) {
-                    if ((renglone.getSSPosi(j)==i)) {
+                    if ((renglone.getSSPosi(j)==i)&&(!bandera)) {
                         acumulador=acumulador+((renglone.gettM()-llegada)*Inicio.costoEC);
-                        acumulador=acumulador+((renglone.getDTPosi(i)-renglone.gettM()*Inicio.costoTSC));
+                        acumulador=acumulador+((renglone.getDTPosi(j)-renglone.gettM()*Inicio.costoTSC));
                         bandera=true;
                     }
-                }
-                if (bandera) {
-                    break;
                 }
                 
             }
@@ -619,6 +635,7 @@ public class Reporte extends javax.swing.JPanel {
                 id,usos[i]
             });
         }
+        jTextField9.setText(String.valueOf(tiempoPromedioDespuesCerrar()));
         jTextField10.setText(String.valueOf(costoServidor()));
         jTextField11.setText(String.valueOf(costoCliente()));
         jTextField12.setText(String.valueOf(costoSistema()));
