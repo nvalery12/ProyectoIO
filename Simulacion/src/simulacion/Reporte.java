@@ -6,6 +6,8 @@
 package simulacion;
 
 import java.awt.BorderLayout;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -62,6 +64,8 @@ public class Reporte extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         jTextField12 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jTextField13 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(153, 255, 255));
         setMinimumSize(new java.awt.Dimension(980, 589));
@@ -86,9 +90,9 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel7.setText("Tiempo promedio de un cliente en sistema:");
 
-        jLabel8.setText("Tiempo promedio de espera del cliente que hace cola");
+        jLabel8.setText("Tiempo promedio de espera del cliente que hace cola:");
 
-        jLabel9.setText("Tiempo promedio adicional que se trabaja despues de cerrar");
+        jLabel9.setText("Tiempo promedio adicional que se trabaja despues de cerrar:");
 
         jLabel10.setText("Porcentaje de utilizacion de cada servidor y general:");
 
@@ -114,11 +118,11 @@ public class Reporte extends javax.swing.JPanel {
             tablaPorcentaje.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jLabel11.setText("Costo Servicios");
+        jLabel11.setText("Costo Servicios:");
 
-        jLabel12.setText("Costo Espera/Demora Cliente");
+        jLabel12.setText("Costo Espera/Demora Cliente:");
 
-        jLabel13.setText("Costo del Sistema");
+        jLabel13.setText("Costo del Sistema:");
 
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +130,16 @@ public class Reporte extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTextField13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField13.setText("NombreArchivo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -136,8 +150,13 @@ public class Reporte extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(357, 357, 357)
-                        .addComponent(jButton1)
+                        .addGap(260, 260, 260)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,7 +217,7 @@ public class Reporte extends javax.swing.JPanel {
                                         .addComponent(jLabel9)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 150, Short.MAX_VALUE))))))
+                                .addGap(0, 147, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,7 +268,12 @@ public class Reporte extends javax.swing.JPanel {
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -269,9 +293,15 @@ public class Reporte extends javax.swing.JPanel {
                 repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        guardar();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -290,6 +320,7 @@ public class Reporte extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -639,5 +670,59 @@ public class Reporte extends javax.swing.JPanel {
         jTextField10.setText(String.valueOf(costoServidor()));
         jTextField11.setText(String.valueOf(costoCliente()));
         jTextField12.setText(String.valueOf(costoSistema()));
+    }
+    public void guardar(){
+        String directorio = System.getProperty("user.dir");
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(directorio+"/"+jTextField13.getText()+".txt");
+            pw = new PrintWriter(fichero);
+
+            pw.println(jLabel1.getText()+" "+jTextField1.getText());
+            pw.println(jLabel2.getText()+" "+jTextField2.getText());
+            pw.println(jLabel3.getText()+" "+jTextField3.getText());
+            pw.println(jLabel4.getText()+" "+jTextField4.getText());
+            pw.println(jLabel5.getText()+" "+jTextField5.getText());
+            pw.println(jLabel6.getText()+" "+jTextField6.getText());
+            pw.println(jLabel7.getText()+" "+jTextField7.getText());
+            pw.println(jLabel8.getText()+" "+jTextField8.getText());
+            pw.println(jLabel9.getText()+" "+jTextField9.getText());
+            pw.println("Porcentaje de utilizacion del sistema: "+promedioUsoSistema());
+            float prom[]=promedioUsoServidor();
+            for (int i = 0; i < Inicio.nServs; i++) {
+                pw.println("Porcentaje de utilizacion del servidor "+(i+1)+": "+prom[i]);
+            }
+            pw.println(jLabel11.getText()+" "+jTextField10.getText());
+            pw.println(jLabel12.getText()+" "+jTextField11.getText());
+            pw.println(jLabel13.getText()+" "+jTextField12.getText());
+            
+            JOptionPane.showMessageDialog(null, "Su archivo fue guardado en: "+directorio);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+        
+        int select=JOptionPane.showConfirmDialog(null, "¿Desea volver al menu principal?", null, JOptionPane.YES_NO_OPTION);
+        if (select==JOptionPane.YES_OPTION) {
+            DecisionArchivo pantalla = new DecisionArchivo();
+               pantalla.setSize(980, 589);
+                pantalla.setLocation(0, 0);
+                removeAll();
+                add(pantalla,BorderLayout.CENTER);
+                revalidate();
+                repaint();
+        }
+        
     }
 }

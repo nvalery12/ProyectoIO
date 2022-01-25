@@ -1,0 +1,15 @@
+Cantidad de clientes que no esperan: 2
+Cantidad de clientes que se van sin ser atendidos: 1
+Probabilidad de esperar: 0.71428573
+Cantidad promedio de clientes en cola:  0.71428573
+Cantidad promedio de clientes en sistema:  2.5
+Tiempo promedio de un cliente en cola: 1.4285715
+Tiempo promedio de un cliente en sistema: 3.5714285
+Tiempo promedio de espera del cliente que hace cola: 
+Tiempo promedio adicional que se trabaja despues de cerrar: 3.5
+Porcentaje de utilizacion del sistema: 0.89285713
+Porcentaje de utilizacion del servidor 1: 1.0
+Porcentaje de utilizacion del servidor 2: 0.78571427
+Costo Servicios: 80.0
+Costo Espera/Demora Cliente: 52.0
+Costo del Sistema: 112.0
