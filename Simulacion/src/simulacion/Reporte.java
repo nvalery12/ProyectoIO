@@ -249,11 +249,12 @@ public class Reporte extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -505,12 +506,12 @@ public class Reporte extends javax.swing.JPanel {
         List<Integer>quedan= new ArrayList<Integer>();
         for (int i = 0; i < Inicio.nServs; i++) {
             if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)!=0) {
-                quedan.add(Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i));
+                quedan.add(Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo);
             }
         }
         float acumulador=0;
-        for (int i = 0; i < Inicio.nServs; i++) {
-            acumulador=acumulador+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
+        for (Integer inte : quedan) {
+            acumulador=acumulador + inte;
         }
         float servidores=Inicio.nServs;
         return acumulador/servidores;
@@ -612,7 +613,7 @@ public class Reporte extends javax.swing.JPanel {
                 for (int j = 0; j < Inicio.nServs; j++) {
                     if ((renglone.getSSPosi(j)==i)&&(!bandera)) {
                         acumulador=acumulador+((renglone.gettM()-llegada)*Inicio.costoEC);
-                        acumulador=acumulador+((renglone.getDTPosi(j)-renglone.gettM()*Inicio.costoTSC));
+                        acumulador=acumulador+((renglone.getDTPosi(j)-renglone.gettM())*Inicio.costoTSC);
                         bandera=true;
                     }
                 }
@@ -623,7 +624,11 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float costoServidor(){
-        float suma=0;
+        float suma[]=new float[Inicio.nServs];
+        for (int i = 0; i < Inicio.nServs; i++) {
+            suma[i]=0;
+        }
+        float ocupado=0;
         for (int i = 0; i < Inicio.nServs; i++) {
             boolean bandera=false;
             int llegada=0;
@@ -633,22 +638,26 @@ public class Reporte extends javax.swing.JPanel {
                     bandera=true;
                 }
                 if ((renglone.getSSPosi(i)!=0)&&(bandera)) {
-                    suma=suma+renglone.gettM()-llegada;
+                    suma[i]=suma[i]+renglone.gettM()-llegada;
                     bandera=false;
                 }
             }
+            ocupado=ocupado + Inicio.tiempo-suma[i];
         }
-        float ocupado=Inicio.tiempo-suma;
+        float desocupado=0;
+        for (int i = 0; i < Inicio.nServs; i++) {
+            desocupado=desocupado+suma[i];
+        }
         float extra=0;
         for (int i = 0; i < Inicio.nServs; i++) {
             if (Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)!=0) {
                 extra=extra+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
             }
         }
-        suma=suma*Inicio.costoServD;
+        desocupado=desocupado*Inicio.costoServD;
         ocupado=ocupado*Inicio.costoSerO;
         extra=extra*Inicio.costoServTE;
-        return suma+ocupado+extra;
+        return desocupado+ocupado+extra;
     }
     
     public void llenar(){
@@ -659,6 +668,7 @@ public class Reporte extends javax.swing.JPanel {
         jTextField5.setText(String.valueOf(clientesPromedioSistema()));
         jTextField6.setText(String.valueOf(tiempoPromedioClientesCola()));
         jTextField7.setText(String.valueOf(tiempoPromedioClienteSistema()));
+        jTextField8.setText(String.valueOf(tiempoPromedioClientesCola()));
         DefaultTableModel table =(DefaultTableModel)this.tablaPorcentaje.getModel();
         table.addRow(new Object[]{
             "Sistema",promedioUsoSistema()
