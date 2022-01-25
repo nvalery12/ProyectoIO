@@ -573,17 +573,19 @@ public class Reporte extends javax.swing.JPanel {
     
     public float costoSistema(){
         float acumulador=0;
-        acumulador=Inicio.tiempo;
         int mayor=0;
         for (int i = 0; i < Inicio.nServs; i++) {
             if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)!=0) {
-                if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)>mayor) {
+                if (Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)>mayor) {
                     mayor=Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i);
                 }
             }
         }
-        mayor=mayor-Inicio.tiempo;
-        acumulador=acumulador*Inicio.costoSistemaN;
+        if (mayor>0) {
+            mayor=mayor-Inicio.tiempo;
+        }
+        
+        acumulador=acumulador+(Inicio.tiempo*Inicio.costoSistemaN);
         
         acumulador=acumulador+(Inicio.costoSistemaTE*mayor);
         
@@ -639,7 +641,9 @@ public class Reporte extends javax.swing.JPanel {
         float ocupado=Inicio.tiempo-suma;
         float extra=0;
         for (int i = 0; i < Inicio.nServs; i++) {
-            extra=extra+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
+            if (Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)!=0) {
+                extra=extra+Inicio.renglones.get(Inicio.renglones.size()-1).getDTPosi(i)-Inicio.tiempo;
+            }
         }
         suma=suma*Inicio.costoServD;
         ocupado=ocupado*Inicio.costoSerO;
