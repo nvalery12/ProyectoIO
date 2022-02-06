@@ -235,12 +235,33 @@ public class DecisionArchivo extends javax.swing.JPanel {
             rPrin.setnAleatorioTS(-1);
             rPrin.settServicio(-1);
             Inicio.renglones.add(new Renglon(rPrin));
+            if (Inicio.clientesNoEsperan!=0) {
+                Inicio.clientesNoEsperan=0;
+            }
+            int clientesEntraron=0;
+            int tmAnterior=0;
+            int clientesPromedioSistema=0;
+            int clientesPromedioCola=0;
+            int tmCola=0;
+            Inicio.promUso= new float[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=0;
+            }
+            float []usosServ = new float[Inicio.nServs];
+            int []tiempoSer= new int[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                tiempoSer[i]=0;
+                tiempoSer[i]=0;
+            }
             while (tM<=Inicio.tiempo) {       
                 Boolean cambioTabla=false;
                 //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
                 //Caso 1 AT es igual a TM y menor a los DT
                 if((aT==tM)){
                     cambioTabla=true;
+                    clientesEntraron++;
+                    clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                    tmAnterior=tM;
                     tipo='l';
                     nEvento=nEvento+1;
                     ultimoC=ultimoC+1;
@@ -251,6 +272,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     boolean bandera=false;
                     for (int i = 0; i < servidores.length; i++) {
                         if (servidores[i].vacio()) {
+                            tiempoSer[i]=tM;
                             bandera=true;
                             Integer lec=new Random().nextInt(99)+ 0;
                             Integer numTs=tM + Inicio.servicios.num(lec);
@@ -259,11 +281,14 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             rPrin.updateDT(i, numTs);
                             rPrin.setnAleatorioTS(lec);
                             rPrin.settServicio(numTs);
+                            Inicio.clientesNoEsperan++;
                             break;
                         }
                     }
                     if(!bandera){
                         cola.add(ultimoC);
+                        clientesPromedioCola=tmCola+(rPrin.getwL()*(tM-tmCola));
+                        tmCola=tM;
                         rPrin.setwL(rPrin.getwL()+1);
                         rPrin.settServicio(-1);
                         rPrin.setnAleatorioTS(-1);
@@ -277,6 +302,8 @@ public class DecisionArchivo extends javax.swing.JPanel {
                 }else{
                     if(tM==menor(Inicio.nServs, servidores)){
                         cambioTabla=true;
+                        clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                        tmAnterior=tM;
                         tipo='s';
                         nEvento=nEvento+1;
                         rPrin.setTipo(tipo);
@@ -291,7 +318,12 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         rPrin.setnAleatorioTELL(-1);
                         rPrin.setTiempoTELL(-1);
                         rPrin.setcSistema(rPrin.getcSistema()-1);
+                        if (cola.isEmpty()) {
+                            usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
+                        }
                         if(!cola.isEmpty()){
+                            clientesPromedioCola=tmCola+(rPrin.getwL()*(tM-tmCola));
+                            tmCola=tM;
                             Integer prueba=new Random().nextInt(99)+ 0;
                             rPrin.setnAleatorioTS(prueba);
                             Integer numTs=Inicio.servicios.num(prueba);
@@ -316,10 +348,42 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
 
             }
+            Inicio.clientesNoEsperan=1-(Inicio.clientesNoEsperan/clientesEntraron);
+            if(Inicio.clientesPromSistema!=0){
+                Inicio.clientesPromSistema=0;
+            }
+            Inicio.clientesPromSistema=clientesPromedioSistema/tM;
+            if (Inicio.clientesPromCola!=0) {
+                Inicio.clientesPromCola=0;
+            }
+            Inicio.clientesPromCola=clientesPromedioCola/tM;
             for(Renglon e:Inicio.renglones){
                 e.print();
                 System.out.println("\n");
             }
+            for (int i = 0; i < Inicio.nServs; i++) {
+                if (rPrin.sS[i]!=0) {
+                    usosServ[i]=usosServ[i]+tM-tiempoSer[i];
+                }
+            }
+            float tiempoSim=tM;
+            Inicio.promUso= new float[Inicio.nServs];
+            if (Inicio.usoServ!=0) {
+                Inicio.usoServ=0;
+            }
+            if (Inicio.tiempoPromCerrar!=0) {
+                Inicio.tiempoPromCerrar=0;
+            }
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=usosServ[i]/tiempoSim;
+                Inicio.usoServ=Inicio.usoServ+Inicio.promUso[i];
+                if (rPrin.getSSPosi(i)!=0) {
+                    Inicio.tiempoPromCerrar=Inicio.tiempoPromCerrar+rPrin.getDTPosi(i)-tM;
+                }
+            }
+            Inicio.usoServ=Inicio.usoServ/Inicio.nServs;
+            Inicio.tiempoPromCerrar=Inicio.tiempoPromCerrar/Inicio.nServs;
+            
 
             
             try {

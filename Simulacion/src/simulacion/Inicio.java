@@ -37,6 +37,15 @@ public class Inicio extends javax.swing.JFrame {
     public static float costoSistemaN;
     public static float costoSistemaTE;
     public static boolean modificar=false;
+    //Reportes
+    public static Integer clientesNoEsperan=0;
+    //El reporte de clientes que se van sin ser atendidos es funcional como esta
+    public static float probabilidadEsperar=0;
+    public static float clientesPromSistema=0;
+    public static float clientesPromCola=0;
+    public static float []promUso;
+    public static float usoServ;
+    public static float tiempoPromCerrar=0;
 
     /**
      * Creates new form Inicio

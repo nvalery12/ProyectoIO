@@ -80,6 +80,12 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel5.setText("Cantidad promedio de clientes en sistema: ");
 
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
         jLabel6.setText("Tiempo promedio de un cliente en cola:");
 
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
@@ -299,6 +305,10 @@ public class Reporte extends javax.swing.JPanel {
         guardar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -333,6 +343,7 @@ public class Reporte extends javax.swing.JPanel {
     private javax.swing.JTable tablaPorcentaje;
     // End of variables declaration//GEN-END:variables
     public Integer cantidadClientesNoEsperan(){
+        //Listo
         Integer clientes=0;
         for (Renglon e : Inicio.renglones) {
             for (int i = 0; i < e.getsS().length; i++) {
@@ -348,6 +359,7 @@ public class Reporte extends javax.swing.JPanel {
         return Inicio.renglones.get(Inicio.renglones.size()-1).getwL();
     }
     public float probEsperar(){
+        //Listo
         float clientes=0;
         float clientWL=0;
         int tmA=0;
@@ -409,6 +421,7 @@ public class Reporte extends javax.swing.JPanel {
         return acumulador1/tiempo;
     }
     public float clientesPromedioCola(){
+        //Listo
         int maximo=0;
         for (Renglon renglone : Inicio.renglones) {
             if(maximo<renglone.getwL()){
@@ -437,6 +450,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float []promedioUsoServidor(){
+        //Listo
         float []promedios=new float[Inicio.nServs];
         float []tiempo_uso_sev= new float[Inicio.nServs];
         for (int i = 0; i < Inicio.nServs; i++) {
@@ -467,6 +481,7 @@ public class Reporte extends javax.swing.JPanel {
         return promedios;
     }
     public float promedioUsoSistema(){
+        //Listo
         float []promedios=new float[Inicio.nServs];
         float []tiempo_uso_sev= new float[Inicio.nServs];
         for (int i = 0; i < Inicio.nServs; i++) {
@@ -503,6 +518,7 @@ public class Reporte extends javax.swing.JPanel {
         
     }
     public float tiempoPromedioDespuesCerrar(){
+        //Listo
         List<Integer>quedan= new ArrayList<Integer>();
         for (int i = 0; i < Inicio.nServs; i++) {
             if (Inicio.renglones.get(Inicio.renglones.size()-1).getSSPosi(i)!=0) {
