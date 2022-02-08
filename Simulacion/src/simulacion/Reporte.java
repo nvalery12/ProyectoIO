@@ -72,14 +72,23 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel1.setText("Cantidad de clientes que no esperan:");
 
+        jTextField1.setEditable(false);
+
         jLabel2.setText("Cantidad de clientes que se van sin ser atendidos:");
+
+        jTextField2.setEditable(false);
 
         jLabel3.setText("Probabilidad de esperar:");
 
+        jTextField3.setEditable(false);
+
         jLabel4.setText("Cantidad promedio de clientes en cola: ");
+
+        jTextField4.setEditable(false);
 
         jLabel5.setText("Cantidad promedio de clientes en sistema: ");
 
+        jTextField5.setEditable(false);
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
@@ -88,6 +97,7 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel6.setText("Tiempo promedio de un cliente en cola:");
 
+        jTextField6.setEditable(false);
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
@@ -96,7 +106,13 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel7.setText("Tiempo promedio de un cliente en sistema:");
 
+        jTextField7.setEditable(false);
+
+        jTextField8.setEditable(false);
+
         jLabel8.setText("Tiempo promedio de espera del cliente que hace cola:");
+
+        jTextField9.setEditable(false);
 
         jLabel9.setText("Tiempo promedio adicional que se trabaja despues de cerrar:");
 
@@ -126,9 +142,15 @@ public class Reporte extends javax.swing.JPanel {
 
         jLabel11.setText("Costo Servicios:");
 
+        jTextField10.setEditable(false);
+
         jLabel12.setText("Costo Espera/Demora Cliente:");
 
+        jTextField11.setEditable(false);
+
         jLabel13.setText("Costo del Sistema:");
+
+        jTextField12.setEditable(false);
 
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -535,6 +557,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float tiempoPromedioClienteSistema(){
+        //Listo
         int ultimoCliente=0;
         float max;
         for (Renglon renglone : Inicio.renglones) {
@@ -560,6 +583,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float tiempoPromedioClientesCola(){
+        //Listo
         int ultimoCliente=0;
         float max;
         for (Renglon renglone : Inicio.renglones) {
@@ -589,6 +613,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float costoSistema(){
+        //Listo
         float acumulador=0;
         int mayor=0;
         for (int i = 0; i < Inicio.nServs; i++) {
@@ -610,6 +635,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float costoCliente(){
+        //Listo
         int ultimoCliente=0;
         for (Renglon renglone : Inicio.renglones) {
             if ((renglone.getTipo()=='l')&&(ultimoCliente<renglone.getCliente())) {
@@ -640,6 +666,7 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public float costoServidor(){
+        //Listo
         float suma[]=new float[Inicio.nServs];
         for (int i = 0; i < Inicio.nServs; i++) {
             suma[i]=0;
@@ -677,28 +704,28 @@ public class Reporte extends javax.swing.JPanel {
     }
     
     public void llenar(){
-        jTextField1.setText(String.valueOf(cantidadClientesNoEsperan()));
+        jTextField1.setText(String.valueOf(Inicio.clientesNoEsperan));
         jTextField2.setText(String.valueOf(clientesSinSerAtendidos()));
-        jTextField3.setText(String.valueOf(probEsperar()));
-        jTextField4.setText(String.valueOf(clientesPromedioCola()));
-        jTextField5.setText(String.valueOf(clientesPromedioSistema()));
-        jTextField6.setText(String.valueOf(tiempoPromedioClientesCola()));
-        jTextField7.setText(String.valueOf(tiempoPromedioClienteSistema()));
-        jTextField8.setText(String.valueOf(tiempoPromedioClientesCola()));
+        jTextField3.setText(String.valueOf(Inicio.probabilidadEsperar));
+        jTextField4.setText(String.valueOf(Inicio.clientesPromCola));
+        jTextField5.setText(String.valueOf(Inicio.clientesPromSistema));
+        jTextField6.setText(String.valueOf(Inicio.tiempPromClieCola));
+        jTextField7.setText(String.valueOf(Inicio.tiempoPromClientesSistema));
+        jTextField8.setText(String.valueOf(Inicio.prometioclientescola));
         DefaultTableModel table =(DefaultTableModel)this.tablaPorcentaje.getModel();
         table.addRow(new Object[]{
-            "Sistema",promedioUsoSistema()
+            "Sistema",Inicio.usoServ
         });
         float usos[]=promedioUsoServidor();
         for (int i = 0; i < Inicio.nServs; i++) {
             int id=i+1;
             table.addRow(new Object[]{
-                id,usos[i]
+                id,Inicio.promUso[i]
             });
         }
         jTextField9.setText(String.valueOf(tiempoPromedioDespuesCerrar()));
-        jTextField10.setText(String.valueOf(costoServidor()));
-        jTextField11.setText(String.valueOf(costoCliente()));
+        jTextField10.setText(String.valueOf(Inicio.costoServidoresDeso+Inicio.costoServidoresOcu+Inicio.costoServidoresExtra));
+        jTextField11.setText(String.valueOf(Inicio.costoCliente+Inicio.costoClienteCola));
         jTextField12.setText(String.valueOf(costoSistema()));
     }
     public void guardar(){

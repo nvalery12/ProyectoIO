@@ -141,7 +141,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             
         }
         
-        
+        int cantidad=0;
         for (Renglon renglone : Inicio.renglones) {
             String []fil = new String[11+(2*Inicio.nServs)];
             int i=0;
@@ -175,6 +175,8 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             i++;
             fil[i]=renglone.gettServicio().toString();
             tableListiner.addRow(fil);
+            
+            cantidad++;
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -208,7 +210,11 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
     }
     public void cargarFilas(){
         int tamaño1=11+(Inicio.nServs*2);
-        filas=new String[Inicio.renglones.size()][tamaño1];
+        int cantidad=Inicio.renglones.size();
+        if (cantidad>20) {
+            cantidad=20;
+        }
+        filas=new String[20][tamaño1];
         int j=0;
         for (Renglon renglon : Inicio.renglones) {
             int i=0;
@@ -241,6 +247,9 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             filas[j][i]=renglon.getnAleatorioTS().toString();
             i++;
             filas[j][i]=renglon.gettServicio().toString();
+            if(j==20){
+                return;
+            }
             j++;
         }
     }

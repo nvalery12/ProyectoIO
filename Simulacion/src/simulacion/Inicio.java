@@ -46,6 +46,14 @@ public class Inicio extends javax.swing.JFrame {
     public static float []promUso;
     public static float usoServ;
     public static float tiempoPromCerrar=0;
+    public static float tiempoPromClientesSistema=0;
+    public static float tiempPromClieCola=0;
+    public static float costoServidoresDeso=0;
+    public static float costoServidoresOcu=0;
+    public static float costoServidoresExtra=0;
+    public static float costoCliente;
+    public static float costoClienteCola;
+    public static float prometioclientescola;
 
     /**
      * Creates new form Inicio
