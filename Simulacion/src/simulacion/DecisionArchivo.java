@@ -93,7 +93,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(170, 170, 170)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,30 +238,31 @@ public class DecisionArchivo extends javax.swing.JPanel {
             if (Inicio.clientesNoEsperan!=0) {
                 Inicio.clientesNoEsperan=0;
             }
-            float clientesEntraron=0;
+            double clientesEntraron=0;
             int tmAnterior=0;
-            float clientesPromedioSistema=0;
-            float clientesPromedioCola=0;
+            double clientesPromedioSistema=0;
+            double clientesPromedioCola=0;
             int tmCola=0;
-            Inicio.promUso= new float[Inicio.nServs];
+            Inicio.promUso= new double[Inicio.nServs];
             for (int i = 0; i < Inicio.nServs; i++) {
                 Inicio.promUso[i]=0;
             }
-            float []usosServ = new float[Inicio.nServs];
-            int []tiempoSer= new int[Inicio.nServs];
+            double []usosServ = new double[Inicio.nServs];
+            double []tiempoSer= new double[Inicio.nServs];
             for (int i = 0; i < Inicio.nServs; i++) {
                 tiempoSer[i]=0;
                 tiempoSer[i]=0;
             }
             List<ClientesTiempos> listaClientes= new ArrayList<ClientesTiempos>();
-            float []tiemposServidores= new float[Inicio.nServs];
-            float clientescola=0;
+            double []tiemposServidores= new double[Inicio.nServs];
+            double clientescola=0;
             Inicio.clientesNoEsperan=0;
             listaClientes.add(new ClientesTiempos(0,0));
             listaClientes.get(0).setServicio(0);
             listaClientes.get(0).setSalida(0);
             while (tM<=Inicio.tiempo) {       
                 Boolean cambioTabla=false;
+                System.out.println("Tiempo: "+tM);
                 //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
                 //Caso 1 AT es igual a TM y menor a los DT
                 if((aT==tM)){
@@ -324,7 +325,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         listaClientes.get(rPrin.getCliente()).setSalida(tM);
                         servidores[saliendo].sacarCliente();
                         rPrin.updateSS(saliendo, 0);
-                        rPrin.updateDT(saliendo, 9999);
+                        rPrin.updateDT(saliendo, 999999999);
                         rPrin.setnAleatorioTS(-1);
                         rPrin.settServicio(-1);
                         rPrin.setnAleatorioTELL(-1);
@@ -334,7 +335,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
                         }
                         if(!cola.isEmpty()){
-                            clientesPromedioCola=tmCola+(rPrin.getwL()*(tM-tmCola));
+                            clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
                             tmCola=tM;
                             Integer prueba=new Random().nextInt(99)+ 0;
                             rPrin.setnAleatorioTS(prueba);
@@ -352,38 +353,41 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     }
                 }
                 if(cambioTabla){
-                    rPrin.tM=tM;
-                    Inicio.renglones.add(new Renglon(rPrin));
+                    if (rPrin.getNum()<=20) {
+                        rPrin.tM=tM;
+                        Inicio.renglones.add(new Renglon(rPrin));
+                    }
                 }
                 if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){
-                    tM=tM+1;
+                    if (aT<menor(Inicio.nServs, servidores)) {
+                        tM=aT;
+                    }else{
+                        tM=menor(Inicio.nServs, servidores);
+                    }
                 }
 
 
             }
+            Inicio.clientesNoatendidos=rPrin.getwL();
             Inicio.probabilidadEsperar=1-(Inicio.clientesNoEsperan/clientesEntraron);
             if(Inicio.clientesPromSistema!=0){
                 Inicio.clientesPromSistema=0;
             }
-            float tmfloat=tM;
-            Inicio.clientesPromSistema=clientesPromedioSistema/tmfloat;
+            double tmdouble=tM;
+            Inicio.clientesPromSistema=clientesPromedioSistema/tmdouble;
             if (Inicio.clientesPromCola!=0) {
                 Inicio.clientesPromCola=0;
             }
             Inicio.prometioclientescola=clientesPromedioCola/clientescola;
             
-            Inicio.clientesPromCola=clientesPromedioCola/tmfloat;
-            for(Renglon e:Inicio.renglones){
-                e.print();
-                System.out.println("\n");
-            }
+            Inicio.clientesPromCola=clientesPromedioCola/tmdouble;
             for (int i = 0; i < Inicio.nServs; i++) {
                 if (rPrin.sS[i]!=0) {
                     usosServ[i]=usosServ[i]+tM-tiempoSer[i];
                 }
             }
-            float tiempoSim=tM;
-            Inicio.promUso= new float[Inicio.nServs];
+            double tiempoSim=tM;
+            Inicio.promUso= new double[Inicio.nServs];
             if (Inicio.usoServ!=0) {
                 Inicio.usoServ=0;
             }
@@ -423,6 +427,8 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     Inicio.costoServidoresExtra=Inicio.costoServidoresExtra+rPrin.getDTPosi(i)-Inicio.tiempo;
                 }
             }
+            float ser=Inicio.nServs;
+            Inicio.tiempoextra=Inicio.costoServidoresExtra/ser;
             Inicio.costoServidoresDeso=Inicio.costoServidoresDeso*Inicio.costoServD;
             Inicio.costoServidoresOcu=Inicio.costoServidoresOcu*Inicio.costoSerO;
             Inicio.costoServidoresExtra=Inicio.costoServidoresExtra*Inicio.costoServTE;

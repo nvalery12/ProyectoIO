@@ -40,20 +40,22 @@ public class Inicio extends javax.swing.JFrame {
     //Reportes
     public static Integer clientesNoEsperan=0;
     //El reporte de clientes que se van sin ser atendidos es funcional como esta
-    public static float probabilidadEsperar=0;
-    public static float clientesPromSistema=0;
-    public static float clientesPromCola=0;
-    public static float []promUso;
-    public static float usoServ;
-    public static float tiempoPromCerrar=0;
-    public static float tiempoPromClientesSistema=0;
-    public static float tiempPromClieCola=0;
-    public static float costoServidoresDeso=0;
-    public static float costoServidoresOcu=0;
-    public static float costoServidoresExtra=0;
-    public static float costoCliente;
-    public static float costoClienteCola;
-    public static float prometioclientescola;
+    public static double probabilidadEsperar=0;
+    public static double clientesPromSistema=0;
+    public static double clientesPromCola=0;
+    public static double []promUso;
+    public static double usoServ;
+    public static double tiempoPromCerrar=0;
+    public static double tiempoPromClientesSistema=0;
+    public static double tiempPromClieCola=0;
+    public static double costoServidoresDeso=0;
+    public static double costoServidoresOcu=0;
+    public static double costoServidoresExtra=0;
+    public static double costoCliente;
+    public static double costoClienteCola;
+    public static double prometioclientescola;
+    public static double clientesNoatendidos;
+    public static double tiempoextra;
 
     /**
      * Creates new form Inicio
@@ -119,7 +121,7 @@ public class Inicio extends javax.swing.JFrame {
                     .addGroup(panelInicioLayout.createSequentialGroup()
                         .addGap(400, 400, 400)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(715, Short.MAX_VALUE))
         );
         panelInicioLayout.setVerticalGroup(
             panelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

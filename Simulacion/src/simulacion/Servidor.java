@@ -17,7 +17,7 @@ public class Servidor {
     public Servidor(Integer nServidor) {
         this.nServidor = nServidor;
         client=0;
-        dT=999;
+        dT=999999999;
     }
 
     public Integer getnServidor() {
@@ -53,7 +53,7 @@ public class Servidor {
    
    public void sacarCliente(){
        client=0;
-       dT=99999;
+       dT=999999999;
    }
    
    public void llegaCliente(Integer cliente, Integer dT){
