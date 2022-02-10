@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class Inicio extends javax.swing.JFrame {
     DecisionArchivo pantalla= new DecisionArchivo();
+    public static Integer min=0;
     public static Integer tiempo= new Integer(0);
     public static Integer nServs= new Integer(0);
     VisualizarSimulacion p1 = new VisualizarSimulacion();

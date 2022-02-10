@@ -189,7 +189,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Segundos&quot;, &quot;Minutos&quot;, &quot;Horas&quot;, &quot;Dias&quot;,&quot;Semanas&quot;,&quot;Meses&quot; })" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Segundos&quot;, &quot;Minutos&quot;, &quot;Horas&quot;, &quot;Dias&quot;,&quot;Semanas&quot;,&quot;Meses&quot;,&quot;A&#xf1;os&quot; })" type="code"/>
         </Property>
       </Properties>
       <AuxValues>

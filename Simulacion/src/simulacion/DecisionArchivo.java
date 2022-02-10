@@ -484,6 +484,39 @@ public class DecisionArchivo extends javax.swing.JPanel {
             Inicio.llegadas.completacion();
             Inicio.servicios.completacion();
             Inicio.unidad=br.readLine();
+            if (Inicio.unidad=="Segundos") {
+                Inicio.min=Inicio.tiempo;
+                Inicio.tiempo=1;
+            }else{
+                if (Inicio.unidad=="Minutos") {
+                    Inicio.min=Inicio.tiempo;
+                    Inicio.tiempo=1;
+
+                }else{
+                    if (Inicio.unidad=="Dias") {
+                        Inicio.min=540;
+
+                    }else{
+                        if (Inicio.unidad=="Semanas") {
+                            Inicio.min=540;
+                            Inicio.tiempo=Inicio.tiempo*7;
+
+                        }else{
+                            if (Inicio.unidad=="Meses") {
+                                Inicio.min=540;
+                                Inicio.tiempo=Inicio.tiempo*30;
+
+                            }else{
+                                if (Inicio.unidad=="Años") {
+                                     Inicio.min=540;
+                                     Inicio.tiempo=Inicio.tiempo*360;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             Inicio.clientesPermitidos=Integer.valueOf(br.readLine());
             Inicio.costoTSC=Float.parseFloat(br.readLine());
             Inicio.costoEC=Float.parseFloat(br.readLine());
