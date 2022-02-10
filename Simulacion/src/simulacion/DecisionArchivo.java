@@ -135,7 +135,8 @@ public class DecisionArchivo extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Debe crear el documento en Crear");
         }
-        simular();
+        //simular();
+        simulacion2();
         VisualizarSimulacion p4 = new VisualizarSimulacion();
         p4.setSize(980, 589);
         p4.setLocation(0, 0);
@@ -442,6 +443,233 @@ public class DecisionArchivo extends javax.swing.JPanel {
             }
             
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error en lectura");
+        }
+    }
+    
+    public void simulacion2(){
+        Integer nEvento;
+        List<Integer> cola = new ArrayList<Integer>();
+        
+        String directorio = System.getProperty("user.dir");
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        try {
+            archivo = new File(directorio+"/Datos.txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            Inicio.nServs=Integer.parseInt(br.readLine());
+            Servidor []servidores = new Servidor[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                servidores[i] = new Servidor(i+1);
+            }
+            Inicio.tiempo=Integer.parseInt(br.readLine());
+            Integer topeTell=Integer.parseInt(br.readLine());
+            Inicio.llegadas=new Probabilidades(topeTell);
+            for (int i = 0; i < topeTell; i++) {
+                Integer tiempo=Integer.parseInt(br.readLine());
+                float probabilidad= Float.parseFloat(br.readLine());
+                Inicio.llegadas.setTiempo(tiempo, probabilidad, i);
+            }
+            Integer topeTS = Integer.parseInt(br.readLine());
+            Inicio.servicios= new Probabilidades(topeTS);
+            for (int i = 0; i < topeTS; i++) {
+                Integer tiempo = Integer.parseInt(br.readLine());
+                float proba= Float.parseFloat(br.readLine());
+                Inicio.servicios.setTiempo(tiempo, proba, i);
+            }
+            Inicio.llegadas.completacion();
+            Inicio.servicios.completacion();
+            Inicio.unidad=br.readLine();
+            Inicio.clientesPermitidos=Integer.valueOf(br.readLine());
+            Inicio.costoTSC=Float.parseFloat(br.readLine());
+            Inicio.costoEC=Float.parseFloat(br.readLine());
+            Inicio.costoSerO=Float.parseFloat(br.readLine());
+            Inicio.costoServD=Float.parseFloat(br.readLine());
+            Inicio.costoServTE=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaN=Float.parseFloat(br.readLine());
+            Inicio.costoSistemaTE=Float.parseFloat(br.readLine());
+            //Inicio de la simulacion
+            Integer tM=0; 
+            Integer aT=0;
+            nEvento=0;
+            Integer ultimoC=0;
+            char tipo='m';
+            Renglon rPrin=new Renglon(Inicio.nServs);
+            rPrin.setNum(0);
+            rPrin.setTipo('n');
+            rPrin.setCliente(0);
+            rPrin.setaT(aT);
+            rPrin.settM(tM);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateSS(i, 0);
+            }
+            rPrin.setwL(0);
+            rPrin.setcSistema(0);
+            for (int i = 0; i < Inicio.nServs; i++) {
+                rPrin.updateDT(i, 999999999);
+            }
+            rPrin.setnAleatorioTELL(-1);
+            rPrin.setTiempoTELL(-1);
+            rPrin.setnAleatorioTS(-1);
+            rPrin.settServicio(-1);
+            Inicio.renglones.add(new Renglon(rPrin));
+            if (Inicio.clientesNoEsperan!=0) {
+                Inicio.clientesNoEsperan=0;
+            }
+            double clientesEntraron=0;
+            int tmAnterior=0;
+            double clientesPromedioSistema=0;
+            double clientesPromedioCola=0;
+            int tmCola=0;
+            Inicio.promUso= new double[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=0;
+            }
+            double []usosServ = new double[Inicio.nServs];
+            double []tiempoSer= new double[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                tiempoSer[i]=0;
+                tiempoSer[i]=0;
+            }
+            List<ClientesTiempos> listaClientes= new ArrayList<ClientesTiempos>();
+            double []tiemposServidores= new double[Inicio.nServs];
+            double clientescola=0;
+            Inicio.clientesNoEsperan=0;
+            listaClientes.add(new ClientesTiempos(0,0));
+            listaClientes.get(0).setServicio(0);
+            listaClientes.get(0).setSalida(0);
+            int tMAnos=0;
+            while (tMAnos<=2) {    
+                int tmMin=0;
+                tmMin=tM;
+                aT=tM;
+                while (true) {
+                    Boolean cambioTabla=false;
+                    System.out.println("Tiempo: "+tM);
+                    //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
+                    //Caso 1 AT es igual a TM y menor a los DT
+                    if((aT==tM)){
+                        cambioTabla=true;
+                        clientesEntraron++;
+                        clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                        tmAnterior=tM;
+                        tipo='l';
+                        nEvento=nEvento+1;
+                        ultimoC=ultimoC+1;
+                        rPrin.setTipo(tipo);
+                        rPrin.setNum(nEvento);
+                        rPrin.setCliente(ultimoC);
+                        rPrin.setcSistema(rPrin.getcSistema()+1);
+                        listaClientes.add(new ClientesTiempos(ultimoC,tM));
+                        boolean bandera=false;
+                        for (int i = 0; i < servidores.length; i++) {
+                            if (servidores[i].vacio()) {
+                                Inicio.clientesNoEsperan=Inicio.clientesNoEsperan+1;
+                                listaClientes.get(ultimoC).setServicio(tM);
+                                tiempoSer[i]=tM;
+                                bandera=true;
+                                Integer lec=new Random().nextInt(99)+ 0;
+                                Integer numTs=tM + Inicio.servicios.num(lec);
+                                servidores[i].llegaCliente(ultimoC, numTs);
+                                rPrin.updateSS(i, ultimoC);
+                                rPrin.updateDT(i, numTs);
+                                rPrin.setnAleatorioTS(lec);
+                                rPrin.settServicio(numTs);
+
+                                break;
+                            }
+                        }
+                        if(!bandera){
+                            cola.add(ultimoC);
+                            clientescola++;
+                            clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
+                            tmCola=tM;
+                            rPrin.setwL(rPrin.getwL()+1);
+                            rPrin.settServicio(-1);
+                            rPrin.setnAleatorioTS(-1);
+                        }
+                        Integer lec2=new Random().nextInt(99)+ 0;
+                        Integer numTEL =Inicio.llegadas.num(lec2);
+                        rPrin.setnAleatorioTELL(lec2);
+                        rPrin.setTiempoTELL(numTEL);
+                        aT=numTEL + tM;
+                        rPrin.setaT(aT);
+                    }else{
+                        if(tM==menor(Inicio.nServs, servidores)){
+                            cambioTabla=true;
+                            clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                            tmAnterior=tM;
+                            tipo='s';
+                            nEvento=nEvento+1;
+                            rPrin.setTipo(tipo);
+                            rPrin.setNum(nEvento);
+                            Integer saliendo=servidormenor(Inicio.nServs, servidores);
+                            rPrin.setCliente(servidores[saliendo].getClient());
+                            listaClientes.get(rPrin.getCliente()).setSalida(tM);
+                            servidores[saliendo].sacarCliente();
+                            rPrin.updateSS(saliendo, 0);
+                            rPrin.updateDT(saliendo, 999999999);
+                            rPrin.setnAleatorioTS(-1);
+                            rPrin.settServicio(-1);
+                            rPrin.setnAleatorioTELL(-1);
+                            rPrin.setTiempoTELL(-1);
+                            rPrin.setcSistema(rPrin.getcSistema()-1);
+                            if (cola.isEmpty()) {
+                                usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
+                            }
+                            if(!cola.isEmpty()){
+                                clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
+                                tmCola=tM;
+                                Integer prueba=new Random().nextInt(99)+ 0;
+                                rPrin.setnAleatorioTS(prueba);
+                                Integer numTs=Inicio.servicios.num(prueba);
+                                Integer newDT=tM+numTs;
+                                servidores[saliendo].llegaCliente(cola.get(0),newDT );
+                                rPrin.setnAleatorioTS(prueba);
+                                rPrin.settServicio(numTs);
+                                rPrin.updateDT(saliendo, newDT);
+                                rPrin.updateSS(saliendo, cola.get(0));
+                                listaClientes.get(cola.get(0)).setServicio(tM);
+                                rPrin.setwL(rPrin.getwL()-1);
+                                cola.remove(0);
+                            }
+                        }
+                    }
+                    if(cambioTabla){
+                        
+                        rPrin.tM=tM;
+                        Inicio.renglones.add(new Renglon(rPrin));
+                        
+                    }
+                    if (aT-tmMin>540) {
+                        aT=999999999;
+                        rPrin.setaT(aT);
+                    }
+                    if ((aT-tmMin>540)&&(menor(Inicio.nServs, servidores)==999999999)) {
+                        tM++;
+                        break;
+                    }
+                    if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){
+                        if (aT<menor(Inicio.nServs, servidores)) {
+                            tM=aT;
+                        }else{
+                            tM=menor(Inicio.nServs, servidores);
+                        }
+                    }
+
+
+            
+                } 
+                    
+                
+                
+                tMAnos++;
+            }
+            } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error en lectura");
         }
