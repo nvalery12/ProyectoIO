@@ -93,7 +93,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(170, 170, 170)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,6 +122,9 @@ public class DecisionArchivo extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (!Inicio.renglones.isEmpty()) {
+            Inicio.renglones.clear();
+        }
         Inicio.archivo=null;
         Inicio.fr=null;
         try {
@@ -232,12 +235,41 @@ public class DecisionArchivo extends javax.swing.JPanel {
             rPrin.setnAleatorioTS(-1);
             rPrin.settServicio(-1);
             Inicio.renglones.add(new Renglon(rPrin));
+            if (Inicio.clientesNoEsperan!=0) {
+                Inicio.clientesNoEsperan=0;
+            }
+            double clientesEntraron=0;
+            int tmAnterior=0;
+            double clientesPromedioSistema=0;
+            double clientesPromedioCola=0;
+            int tmCola=0;
+            Inicio.promUso= new double[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=0;
+            }
+            double []usosServ = new double[Inicio.nServs];
+            double []tiempoSer= new double[Inicio.nServs];
+            for (int i = 0; i < Inicio.nServs; i++) {
+                tiempoSer[i]=0;
+                tiempoSer[i]=0;
+            }
+            List<ClientesTiempos> listaClientes= new ArrayList<ClientesTiempos>();
+            double []tiemposServidores= new double[Inicio.nServs];
+            double clientescola=0;
+            Inicio.clientesNoEsperan=0;
+            listaClientes.add(new ClientesTiempos(0,0));
+            listaClientes.get(0).setServicio(0);
+            listaClientes.get(0).setSalida(0);
             while (tM<=Inicio.tiempo) {       
                 Boolean cambioTabla=false;
+                System.out.println("Tiempo: "+tM);
                 //Verificar cual es el menor entre el tiempo de llegada y los tiempos de salida de los servidores
                 //Caso 1 AT es igual a TM y menor a los DT
                 if((aT==tM)){
                     cambioTabla=true;
+                    clientesEntraron++;
+                    clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                    tmAnterior=tM;
                     tipo='l';
                     nEvento=nEvento+1;
                     ultimoC=ultimoC+1;
@@ -245,9 +277,13 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     rPrin.setNum(nEvento);
                     rPrin.setCliente(ultimoC);
                     rPrin.setcSistema(rPrin.getcSistema()+1);
+                    listaClientes.add(new ClientesTiempos(ultimoC,tM));
                     boolean bandera=false;
                     for (int i = 0; i < servidores.length; i++) {
                         if (servidores[i].vacio()) {
+                            Inicio.clientesNoEsperan=Inicio.clientesNoEsperan+1;
+                            listaClientes.get(ultimoC).setServicio(tM);
+                            tiempoSer[i]=tM;
                             bandera=true;
                             Integer lec=new Random().nextInt(99)+ 0;
                             Integer numTs=tM + Inicio.servicios.num(lec);
@@ -256,11 +292,15 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             rPrin.updateDT(i, numTs);
                             rPrin.setnAleatorioTS(lec);
                             rPrin.settServicio(numTs);
+                            
                             break;
                         }
                     }
                     if(!bandera){
                         cola.add(ultimoC);
+                        clientescola++;
+                        clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
+                        tmCola=tM;
                         rPrin.setwL(rPrin.getwL()+1);
                         rPrin.settServicio(-1);
                         rPrin.setnAleatorioTS(-1);
@@ -274,21 +314,29 @@ public class DecisionArchivo extends javax.swing.JPanel {
                 }else{
                     if(tM==menor(Inicio.nServs, servidores)){
                         cambioTabla=true;
+                        clientesPromedioSistema=clientesPromedioSistema+(rPrin.getcSistema()*(tM-tmAnterior));
+                        tmAnterior=tM;
                         tipo='s';
                         nEvento=nEvento+1;
                         rPrin.setTipo(tipo);
                         rPrin.setNum(nEvento);
                         Integer saliendo=servidormenor(Inicio.nServs, servidores);
                         rPrin.setCliente(servidores[saliendo].getClient());
+                        listaClientes.get(rPrin.getCliente()).setSalida(tM);
                         servidores[saliendo].sacarCliente();
                         rPrin.updateSS(saliendo, 0);
-                        rPrin.updateDT(saliendo, 9999);
+                        rPrin.updateDT(saliendo, 999999999);
                         rPrin.setnAleatorioTS(-1);
                         rPrin.settServicio(-1);
                         rPrin.setnAleatorioTELL(-1);
                         rPrin.setTiempoTELL(-1);
                         rPrin.setcSistema(rPrin.getcSistema()-1);
+                        if (cola.isEmpty()) {
+                            usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
+                        }
                         if(!cola.isEmpty()){
+                            clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
+                            tmCola=tM;
                             Integer prueba=new Random().nextInt(99)+ 0;
                             rPrin.setnAleatorioTS(prueba);
                             Integer numTs=Inicio.servicios.num(prueba);
@@ -298,27 +346,94 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             rPrin.settServicio(numTs);
                             rPrin.updateDT(saliendo, newDT);
                             rPrin.updateSS(saliendo, cola.get(0));
+                            listaClientes.get(cola.get(0)).setServicio(tM);
                             rPrin.setwL(rPrin.getwL()-1);
                             cola.remove(0);
                         }
                     }
                 }
                 if(cambioTabla){
-                    rPrin.tM=tM;
-                    Inicio.renglones.add(new Renglon(rPrin));
+                    if (rPrin.getNum()<=20) {
+                        rPrin.tM=tM;
+                        Inicio.renglones.add(new Renglon(rPrin));
+                    }
                 }
                 if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){
-                    tM=tM+1;
+                    if (aT<menor(Inicio.nServs, servidores)) {
+                        tM=aT;
+                    }else{
+                        tM=menor(Inicio.nServs, servidores);
+                    }
                 }
 
 
             }
-            for(Renglon e:Inicio.renglones){
-                e.print();
-                System.out.println("\n");
+            Inicio.clientesNoatendidos=rPrin.getwL();
+            Inicio.probabilidadEsperar=1-(Inicio.clientesNoEsperan/clientesEntraron);
+            if(Inicio.clientesPromSistema!=0){
+                Inicio.clientesPromSistema=0;
             }
-
+            double tmdouble=tM;
+            Inicio.clientesPromSistema=clientesPromedioSistema/tmdouble;
+            if (Inicio.clientesPromCola!=0) {
+                Inicio.clientesPromCola=0;
+            }
+            Inicio.prometioclientescola=clientesPromedioCola/clientescola;
             
+            Inicio.clientesPromCola=clientesPromedioCola/tmdouble;
+            for (int i = 0; i < Inicio.nServs; i++) {
+                if (rPrin.sS[i]!=0) {
+                    usosServ[i]=usosServ[i]+tM-tiempoSer[i];
+                }
+            }
+            double tiempoSim=tM;
+            Inicio.promUso= new double[Inicio.nServs];
+            if (Inicio.usoServ!=0) {
+                Inicio.usoServ=0;
+            }
+            if (Inicio.tiempoPromCerrar!=0) {
+                Inicio.tiempoPromCerrar=0;
+            }
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=usosServ[i]/tiempoSim;
+                Inicio.usoServ=Inicio.usoServ+Inicio.promUso[i];
+                if (rPrin.getSSPosi(i)!=0) {
+                    Inicio.tiempoPromCerrar=Inicio.tiempoPromCerrar+rPrin.getDTPosi(i)-tM;
+                }
+            }
+            Inicio.usoServ=Inicio.usoServ/Inicio.nServs;
+            Inicio.tiempoPromCerrar=Inicio.tiempoPromCerrar/Inicio.nServs;
+            
+                Inicio.tiempoPromClientesSistema=0;
+                Inicio.tiempPromClieCola=0;
+            
+            for (ClientesTiempos listcli : listaClientes) {
+                if (listcli.salida!=0) {
+                    Inicio.tiempoPromClientesSistema=Inicio.tiempoPromClientesSistema+listcli.getSalida()-listcli.getLlegada();
+                    Inicio.tiempPromClieCola=Inicio.tiempPromClieCola+listcli.getServicio()-listcli.getLlegada();
+                }
+            }
+            Inicio.tiempoPromClientesSistema=Inicio.tiempoPromClientesSistema/clientesEntraron;
+            Inicio.tiempPromClieCola=Inicio.tiempPromClieCola/clientesEntraron;
+
+            Inicio.costoServidoresDeso=0;
+            Inicio.costoServidoresOcu=0;
+            Inicio.costoServidoresExtra=0;
+            
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.costoServidoresOcu=Inicio.costoServidoresOcu+usosServ[i];
+                Inicio.costoServidoresDeso=Inicio.costoServidoresDeso+Inicio.tiempo-usosServ[i];
+                if (rPrin.getSSPosi(i)!=0) {
+                    Inicio.costoServidoresExtra=Inicio.costoServidoresExtra+rPrin.getDTPosi(i)-Inicio.tiempo;
+                }
+            }
+            float ser=Inicio.nServs;
+            Inicio.tiempoextra=Inicio.costoServidoresExtra/ser;
+            Inicio.costoServidoresDeso=Inicio.costoServidoresDeso*Inicio.costoServD;
+            Inicio.costoServidoresOcu=Inicio.costoServidoresOcu*Inicio.costoSerO;
+            Inicio.costoServidoresExtra=Inicio.costoServidoresExtra*Inicio.costoServTE;
+            Inicio.costoClienteCola=Inicio.tiempPromClieCola*Inicio.costoEC;
+            Inicio.costoCliente=Inicio.tiempoPromClientesSistema*Inicio.costoTSC;
             try {
                 fr.close();
             } catch (Exception e) {

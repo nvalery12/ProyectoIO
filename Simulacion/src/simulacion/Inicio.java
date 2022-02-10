@@ -37,12 +37,32 @@ public class Inicio extends javax.swing.JFrame {
     public static float costoSistemaN;
     public static float costoSistemaTE;
     public static boolean modificar=false;
+    //Reportes
+    public static Integer clientesNoEsperan=0;
+    //El reporte de clientes que se van sin ser atendidos es funcional como esta
+    public static double probabilidadEsperar=0;
+    public static double clientesPromSistema=0;
+    public static double clientesPromCola=0;
+    public static double []promUso;
+    public static double usoServ;
+    public static double tiempoPromCerrar=0;
+    public static double tiempoPromClientesSistema=0;
+    public static double tiempPromClieCola=0;
+    public static double costoServidoresDeso=0;
+    public static double costoServidoresOcu=0;
+    public static double costoServidoresExtra=0;
+    public static double costoCliente;
+    public static double costoClienteCola;
+    public static double prometioclientescola;
+    public static double clientesNoatendidos;
+    public static double tiempoextra;
 
     /**
      * Creates new form Inicio
      */
     public Inicio() {
         initComponents();
+        setTitle("Simulacion de modelo de colas");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
@@ -63,7 +83,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 600));
+        setMinimumSize(new java.awt.Dimension(1100, 700));
         setPreferredSize(new java.awt.Dimension(1000, 600));
 
         panelInicio.setBackground(new java.awt.Color(153, 255, 255));
@@ -102,7 +122,7 @@ public class Inicio extends javax.swing.JFrame {
                     .addGroup(panelInicioLayout.createSequentialGroup()
                         .addGap(400, 400, 400)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(715, Short.MAX_VALUE))
         );
         panelInicioLayout.setVerticalGroup(
             panelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

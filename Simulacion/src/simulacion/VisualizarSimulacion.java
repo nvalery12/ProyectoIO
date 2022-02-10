@@ -86,10 +86,10 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(114, 114, 114)
                         .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -110,6 +110,13 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Reporte pantalla = new Reporte();
+               pantalla.setSize(980, 589);
+                pantalla.setLocation(0, 0);
+                removeAll();
+                add(pantalla,BorderLayout.CENTER);
+                revalidate();
+                repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -134,7 +141,7 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             
         }
         
-        
+        int cantidad=0;
         for (Renglon renglone : Inicio.renglones) {
             String []fil = new String[11+(2*Inicio.nServs)];
             int i=0;
@@ -168,6 +175,8 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             i++;
             fil[i]=renglone.gettServicio().toString();
             tableListiner.addRow(fil);
+            
+            cantidad++;
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -201,7 +210,11 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
     }
     public void cargarFilas(){
         int tamaño1=11+(Inicio.nServs*2);
-        filas=new String[Inicio.renglones.size()][tamaño1];
+        int cantidad=Inicio.renglones.size();
+        if (cantidad>20) {
+            cantidad=20;
+        }
+        filas=new String[20][tamaño1];
         int j=0;
         for (Renglon renglon : Inicio.renglones) {
             int i=0;
@@ -234,6 +247,9 @@ public class VisualizarSimulacion extends javax.swing.JPanel {
             filas[j][i]=renglon.getnAleatorioTS().toString();
             i++;
             filas[j][i]=renglon.gettServicio().toString();
+            if(j==20){
+                return;
+            }
             j++;
         }
     }

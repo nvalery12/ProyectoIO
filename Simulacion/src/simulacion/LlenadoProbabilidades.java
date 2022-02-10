@@ -290,7 +290,6 @@ public class LlenadoProbabilidades extends javax.swing.JPanel {
             e.printStackTrace();
         }
         
-        JOptionPane.showMessageDialog(null, acumulador);
         if(acumulador==1){
             return true;
         }else{
