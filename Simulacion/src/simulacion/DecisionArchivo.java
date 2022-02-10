@@ -531,9 +531,15 @@ public class DecisionArchivo extends javax.swing.JPanel {
             }
             double []usosServ = new double[Inicio.nServs];
             double []tiempoSer= new double[Inicio.nServs];
+            double []tiempoSer2= new double[Inicio.nServs];
+            double []tiempoNormal= new double[Inicio.nServs];
+            double []tiempoEx= new double[Inicio.nServs];
             for (int i = 0; i < Inicio.nServs; i++) {
+                usosServ[i]=0;
                 tiempoSer[i]=0;
-                tiempoSer[i]=0;
+                tiempoSer2[i]=0;
+                tiempoNormal[i]=0;
+                tiempoEx[i]=0;
             }
             List<ClientesTiempos> listaClientes= new ArrayList<ClientesTiempos>();
             double []tiemposServidores= new double[Inicio.nServs];
@@ -543,7 +549,8 @@ public class DecisionArchivo extends javax.swing.JPanel {
             listaClientes.get(0).setServicio(0);
             listaClientes.get(0).setSalida(0);
             int tMAnos=0;
-            while (tMAnos<=2) {    
+            double tiempoExtra=0;
+            while (tMAnos<=Inicio.tiempo) {    
                 int tmMin=0;
                 tmMin=tM;
                 aT=tM;
@@ -620,6 +627,15 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             rPrin.setcSistema(rPrin.getcSistema()-1);
                             if (cola.isEmpty()) {
                                 usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
+                                if (tM-tmMin<540) {
+                                    tiempoNormal[saliendo]=tiempoNormal[saliendo]+tM-tiempoSer[saliendo];
+                                }else{
+                                    if (tM-tmMin==540) {
+                                        tiempoNormal[saliendo]=tiempoNormal[saliendo]+tM-tiempoSer[saliendo];
+                                    }else{
+                                        tiempoEx[saliendo]=tiempoEx[saliendo]+tM-tiempoSer2[saliendo];
+                                    }
+                                }
                             }
                             if(!cola.isEmpty()){
                                 clientesPromedioCola=clientesPromedioCola+(rPrin.getwL()*(tM-tmCola));
@@ -647,9 +663,15 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     }
                     if (aT-tmMin>540) {
                         aT=999999999;
+                    }
+                    if (tM-tmMin==540) {
                         rPrin.setaT(aT);
+                        for (int i = 0; i < Inicio.nServs; i++) {
+                            tiempoSer2[i]=tM;
+                        }
                     }
                     if ((aT-tmMin>540)&&(menor(Inicio.nServs, servidores)==999999999)) {
+                        tiempoExtra=tiempoExtra+tM-540-tmMin;
                         tM++;
                         break;
                     }
@@ -669,6 +691,43 @@ public class DecisionArchivo extends javax.swing.JPanel {
                 
                 tMAnos++;
             }
+            double tiempoSim=tM;
+           
+            Inicio.clientesPromSistema=clientesPromedioSistema/tiempoSim;
+            Inicio.clientesPromCola=clientesPromedioCola/tiempoSim;
+            
+            Inicio.tiempoPromClientesSistema=0;
+            Inicio.tiempPromClieCola=0;
+            for (ClientesTiempos lista : listaClientes) {
+                if (lista.getSalida()!=0) {
+                    Inicio.tiempoPromClientesSistema=Inicio.tiempoPromClientesSistema+lista.getSalida()-lista.getLlegada();
+                    Inicio.tiempPromClieCola=Inicio.tiempPromClieCola+lista.getServicio()-lista.getLlegada();
+                }
+            }
+            Inicio.tiempoPromClientesSistema=Inicio.tiempoPromClientesSistema/clientesEntraron;
+            Inicio.tiempPromClieCola=Inicio.tiempPromClieCola/clientescola;
+            double ex=Inicio.tiempo;
+            Inicio.tiempoextra=tiempoExtra/ex;
+            Inicio.usoServ=0;
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.promUso[i]=usosServ[i]/tiempoSim;
+                Inicio.usoServ=Inicio.usoServ+Inicio.promUso[i];
+            }
+            double serv=Inicio.nServs;
+            Inicio.usoServ=Inicio.usoServ/serv;
+            Inicio.costoClienteCola=(Inicio.tiempPromClieCola/Inicio.tiempoPromClientesSistema)*Inicio.costoEC;
+            Inicio.costoCliente=(Inicio.tiempoPromClientesSistema-Inicio.tiempPromClieCola)*Inicio.costoTSC/Inicio.tiempoPromClientesSistema;
+            Inicio.costoServidoresOcu=0;
+            Inicio.costoServidoresExtra=0;
+            Inicio.costoServidoresDeso=0;
+            for (int i = 0; i < Inicio.nServs; i++) {
+                Inicio.costoServidoresOcu=Inicio.costoServidoresOcu+tiempoNormal[i];
+                Inicio.costoServidoresExtra=Inicio.costoServidoresExtra+tiempoEx[i];
+                Inicio.costoServidoresDeso=Inicio.costoServidoresDeso+tM-tiempoNormal[i]-tiempoEx[i];
+            }
+            Inicio.costoServidoresOcu=Inicio.costoServidoresOcu*Inicio.costoSerO/tiempoSim;
+            Inicio.costoServidoresExtra=Inicio.costoServidoresExtra*Inicio.costoServTE/tiempoSim;
+            Inicio.costoServidoresDeso=Inicio.costoServD*Inicio.costoServidoresDeso/tiempoSim;
             } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error en lectura");
