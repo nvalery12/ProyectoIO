@@ -711,27 +711,27 @@ public class Reporte extends javax.swing.JPanel {
     public void llenar(){
         jTextField1.setText(String.valueOf(Inicio.clientesNoEsperan));
         jTextField2.setText(String.valueOf(Inicio.clientesNoatendidos));
-        jTextField3.setText(String.valueOf(Inicio.probabilidadEsperar));
-        jTextField4.setText(String.valueOf(Inicio.clientesPromCola));
-        jTextField5.setText(String.valueOf(Inicio.clientesPromSistema));
-        jTextField6.setText(String.valueOf(Inicio.tiempPromClieCola));
-        jTextField7.setText(String.valueOf(Inicio.tiempoPromClientesSistema));
-        jTextField8.setText(String.valueOf(Inicio.prometioclientescola));
+        jTextField3.setText(String.format("%.2f",Inicio.probabilidadEsperar));
+        jTextField4.setText(String.format("%.2f",Inicio.clientesPromCola));
+        jTextField5.setText(String.format("%.2f",Inicio.clientesPromSistema));
+        jTextField6.setText(String.format("%.2f",Inicio.tiempPromClieCola));
+        jTextField7.setText(String.format("%.2f",Inicio.tiempoPromClientesSistema));
+        jTextField8.setText(String.format("%.2f",Inicio.prometioclientescola));
         DefaultTableModel table =(DefaultTableModel)this.tablaPorcentaje.getModel();
         table.addRow(new Object[]{
-            "Sistema",Inicio.usoServ
+            "Sistema",String.format("%.2f",Inicio.usoServ)
         });
         float usos[]=promedioUsoServidor();
         for (int i = 0; i < Inicio.nServs; i++) {
             int id=i+1;
             table.addRow(new Object[]{
-                id,Inicio.promUso[i]
+                id,String.format("%.2f",Inicio.promUso[i])
             });
         }
-        jTextField9.setText(String.valueOf(Inicio.tiempoextra));
-        jTextField10.setText(String.valueOf(Inicio.costoServidoresDeso+Inicio.costoServidoresOcu+Inicio.costoServidoresExtra));
-        jTextField11.setText(String.valueOf(Inicio.costoCliente+Inicio.costoClienteCola));
-        jTextField12.setText(String.valueOf(costoSistema()));
+        jTextField9.setText(String.format("%.2f",Inicio.tiempoextra));
+        jTextField10.setText(String.format("%.2f",(Inicio.costoServidoresDeso+Inicio.costoServidoresOcu+Inicio.costoServidoresExtra)/Inicio.tiempo));
+        jTextField11.setText(String.format("%.2f",(Inicio.costoCliente+Inicio.costoClienteCola)/Inicio.tiempo));
+        jTextField12.setText(String.format("%.2f",costoSistema()));
     }
     public void guardar(){
         String directorio = System.getProperty("user.dir");
