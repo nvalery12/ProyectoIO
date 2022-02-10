@@ -660,10 +660,10 @@ public class DecisionArchivo extends javax.swing.JPanel {
                             rPrin.setcSistema(rPrin.getcSistema()-1);
                             if (cola.isEmpty()) {
                                 usosServ[saliendo]=usosServ[saliendo]+tM-tiempoSer[saliendo];
-                                if (tM-tmMin<540) {
+                                if (tM-tmMin<Inicio.min) {
                                     tiempoNormal[saliendo]=tiempoNormal[saliendo]+tM-tiempoSer[saliendo];
                                 }else{
-                                    if (tM-tmMin==540) {
+                                    if (tM-tmMin==Inicio.min) {
                                         tiempoNormal[saliendo]=tiempoNormal[saliendo]+tM-tiempoSer[saliendo];
                                     }else{
                                         tiempoEx[saliendo]=tiempoEx[saliendo]+tM-tiempoSer2[saliendo];
@@ -694,18 +694,17 @@ public class DecisionArchivo extends javax.swing.JPanel {
                         Inicio.renglones.add(new Renglon(rPrin));
                         
                     }
-                    if (aT-tmMin>540) {
+                    if (aT-tmMin>Inicio.min) {
                         aT=999999999;
                     }
-                    if (tM-tmMin==540) {
+                    if (tM-tmMin==Inicio.min) {
                         rPrin.setaT(aT);
                         for (int i = 0; i < Inicio.nServs; i++) {
                             tiempoSer2[i]=tM;
                         }
                     }
-                    if ((aT-tmMin>540)&&(menor(Inicio.nServs, servidores)==999999999)) {
-                        tiempoExtra=tiempoExtra+tM-540-tmMin;
-                        tM++;
+                    if ((aT-tmMin>Inicio.min)&&(menor(Inicio.nServs, servidores)==999999999)) {
+                        tiempoExtra=tiempoExtra+tM-Inicio.min-tmMin;
                         break;
                     }
                     if((aT!=tM)&&(tM!=menor(Inicio.nServs, servidores))){

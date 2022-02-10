@@ -731,7 +731,7 @@ public class Reporte extends javax.swing.JPanel {
         jTextField9.setText(String.format("%.2f",Inicio.tiempoextra));
         jTextField10.setText(String.format("%.2f",(Inicio.costoServidoresDeso+Inicio.costoServidoresOcu+Inicio.costoServidoresExtra)));
         jTextField11.setText(String.format("%.2f",(Inicio.costoCliente+Inicio.costoClienteCola)));
-        jTextField12.setText(String.format("%.2f",costoSistema()));
+        jTextField12.setText(String.format("%.2f",Inicio.costoServidoresDeso+Inicio.costoServidoresOcu+Inicio.costoServidoresExtra+Inicio.costoCliente+Inicio.costoClienteCola));
     }
     public void guardar(){
         String directorio = System.getProperty("user.dir");
