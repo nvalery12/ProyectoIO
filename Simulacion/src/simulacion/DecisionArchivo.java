@@ -484,30 +484,30 @@ public class DecisionArchivo extends javax.swing.JPanel {
             Inicio.llegadas.completacion();
             Inicio.servicios.completacion();
             Inicio.unidad=br.readLine();
-            if (Inicio.unidad=="Segundos") {
+            if (Inicio.unidad.equals("Segundos")) {
                 Inicio.min=Inicio.tiempo;
                 Inicio.tiempo=1;
             }else{
-                if (Inicio.unidad=="Minutos") {
+                if (Inicio.unidad.equals("Minutos")) {
                     Inicio.min=Inicio.tiempo;
                     Inicio.tiempo=1;
 
                 }else{
-                    if (Inicio.unidad=="Dias") {
+                    if (Inicio.unidad.equals("Dias")) {
                         Inicio.min=540;
 
                     }else{
-                        if (Inicio.unidad=="Semanas") {
+                        if (Inicio.unidad.equals("Semanas")) {
                             Inicio.min=540;
                             Inicio.tiempo=Inicio.tiempo*7;
 
                         }else{
-                            if (Inicio.unidad=="Meses") {
+                            if (Inicio.unidad.equals("Meses")) {
                                 Inicio.min=540;
                                 Inicio.tiempo=Inicio.tiempo*30;
 
                             }else{
-                                if (Inicio.unidad=="Años") {
+                                if (Inicio.unidad.equals("Años")) {
                                      Inicio.min=540;
                                      Inicio.tiempo=Inicio.tiempo*360;
 
@@ -583,7 +583,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
             listaClientes.get(0).setSalida(0);
             int tMAnos=0;
             double tiempoExtra=0;
-            while (tMAnos<=Inicio.tiempo) {    
+            while (tMAnos<Inicio.tiempo) {    
                 int tmMin=0;
                 tmMin=tM;
                 aT=tM;
@@ -696,6 +696,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
                     }
                     if (aT-tmMin>Inicio.min) {
                         aT=999999999;
+                        rPrin.setaT(aT);
                     }
                     if (tM-tmMin==Inicio.min) {
                         rPrin.setaT(aT);
@@ -737,7 +738,8 @@ public class DecisionArchivo extends javax.swing.JPanel {
                 }
             }
             Inicio.tiempoPromClientesSistema=Inicio.tiempoPromClientesSistema/clientesEntraron;
-            Inicio.tiempPromClieCola=Inicio.tiempPromClieCola/clientescola;
+            Inicio.tiempoclientecola=Inicio.tiempPromClieCola/clientescola;
+            Inicio.tiempPromClieCola=Inicio.tiempPromClieCola/clientesEntraron;
             double ex=Inicio.tiempo;
             Inicio.tiempoextra=tiempoExtra/ex;
             Inicio.usoServ=0;

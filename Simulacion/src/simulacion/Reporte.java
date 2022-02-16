@@ -716,7 +716,7 @@ public class Reporte extends javax.swing.JPanel {
         jTextField5.setText(String.format("%.2f",Inicio.clientesPromSistema));
         jTextField6.setText(String.format("%.2f",Inicio.tiempPromClieCola));
         jTextField7.setText(String.format("%.2f",Inicio.tiempoPromClientesSistema));
-        jTextField8.setText(String.format("%.2f",Inicio.prometioclientescola));
+        jTextField8.setText(String.format("%.2f",Inicio.tiempoclientecola));
         DefaultTableModel table =(DefaultTableModel)this.tablaPorcentaje.getModel();
         table.addRow(new Object[]{
             "Sistema",String.format("%.2f",Inicio.usoServ)

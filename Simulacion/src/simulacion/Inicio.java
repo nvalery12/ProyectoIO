@@ -49,6 +49,7 @@ public class Inicio extends javax.swing.JFrame {
     public static double tiempoPromCerrar=0;
     public static double tiempoPromClientesSistema=0;
     public static double tiempPromClieCola=0;
+    public static double tiempoclientecola=0;
     public static double costoServidoresDeso=0;
     public static double costoServidoresOcu=0;
     public static double costoServidoresExtra=0;
@@ -99,7 +100,7 @@ public class Inicio extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Por Maria Giorgetti y Noel Valery");
+        jLabel3.setText("Por Noel Valery");
 
         jButton1.setText("Iniciar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
