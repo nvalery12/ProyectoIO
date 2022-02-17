@@ -711,7 +711,7 @@ public class Reporte extends javax.swing.JPanel {
     public void llenar(){
         jTextField1.setText(String.valueOf(Inicio.clientesNoEsperan));
         jTextField2.setText(String.valueOf(Inicio.clientesNoatendidos));
-        jTextField3.setText(String.format("%.2f",Inicio.probabilidadEsperar));
+        jTextField3.setText(String.format("%.2f",Inicio.probesperar));
         jTextField4.setText(String.format("%.2f",Inicio.clientesPromCola));
         jTextField5.setText(String.format("%.2f",Inicio.clientesPromSistema));
         jTextField6.setText(String.format("%.2f",Inicio.tiempPromClieCola));

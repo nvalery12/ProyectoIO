@@ -754,6 +754,7 @@ public class DecisionArchivo extends javax.swing.JPanel {
             Inicio.costoServidoresOcu=0;
             Inicio.costoServidoresExtra=0;
             Inicio.costoServidoresDeso=0;
+            Inicio.probesperar=clientescola/clientesEntraron;
             for (int i = 0; i < Inicio.nServs; i++) {
                 Inicio.costoServidoresOcu=Inicio.costoServidoresOcu+tiempoNormal[i];
                 Inicio.costoServidoresExtra=Inicio.costoServidoresExtra+tiempoEx[i];

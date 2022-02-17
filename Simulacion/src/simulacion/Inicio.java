@@ -58,6 +58,7 @@ public class Inicio extends javax.swing.JFrame {
     public static double prometioclientescola;
     public static double clientesNoatendidos;
     public static double tiempoextra;
+    public static double probesperar;
 
     /**
      * Creates new form Inicio
